@@ -12,7 +12,7 @@ import turtle
 Duck = {"Name": "Duck", "MaxHP": 5, "HP": 5,  "Damage": random.randint(1,6)}
 Crab = {"Name": "Crab", "MaxHP": 10, "HP": 10, "Damage": random.randint(1, 3)}
 
-Enemies = [Duck, Crab]
+Enemies = [Duck,Crab]
 PlayerHP = 20
 # class definitions
 class Entity:
@@ -34,6 +34,15 @@ class Player(Entity):
             "accessories": [],
             "consumables": []
         }
+class Enemy(Entity):
+    def __init__(self, args: Array) -> None:
+        self.health = args["health"]
+        self.Name = args["Name"]
+        #A list of all the acitons the enemy can do
+        self.AI = args[AI]
+
+
+    
 
 player = Player({"health": 20, "stamina": 10, "strength": 10})
 print(player.health)
@@ -47,6 +56,9 @@ print(player.health)
 #Im going to work on this ~Cormac
 # game loop
 def Combat():
-	print("You encountered a "+ str(Enemies[random.randrange(len(Enemies))]["Name"])+ "\n")
+    chosenEnemy = Enemies[random.randrange(len(Enemies))]
+    print("You encountered a "+ chosenEnemy["Name"]+ "\n")
+    print(chosenEnemy["Name"] + " uses ")
+
 Combat()
 input() # end of file pause
