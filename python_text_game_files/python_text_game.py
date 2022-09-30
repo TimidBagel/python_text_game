@@ -1,5 +1,5 @@
 # python_text_game.py
-# Authors: Iain, Jun, Robert, Cormac, Drew
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
 # A small text based adventure game
 
 from ctypes import Array
