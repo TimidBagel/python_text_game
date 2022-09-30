@@ -8,7 +8,13 @@ import turtle
 
 # global variable definitions
 
-# class definitions
+# class definitions - Iain
+class Entity:
+    def __init__(self, args):
+        health
+        stamina
+        strength
+        inventory
 
 # input validation
 
