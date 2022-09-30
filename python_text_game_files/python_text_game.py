@@ -5,18 +5,29 @@
 import random
 import time
 import turtle
-import men
 
 # global variable definitions
+health=20
+
 
 # class definitions
 
+
+
 # input validation
+
+
 
 # inventory
 
+
+
 # action loop
 
+
+
 # game loop
+
+
 
 input() # end of file pause
