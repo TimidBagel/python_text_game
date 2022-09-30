@@ -15,7 +15,7 @@ import turtle
 # inventory
 
 # action loop
-
+#Im going to work on this ~Cormac
 # game loop
 
 input() # end of file pause
