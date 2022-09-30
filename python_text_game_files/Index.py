@@ -1,6 +1,14 @@
-# python_text_game.py
-# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
-# A small text based adventure game
+# Index.py
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Ben
+# A Small Text Based Adventure Game
+
+### NOTES ###
+# - Classes are defined as Modules. Meaning they are declared in seperate files. Ie `Player.py` and `Entity.py`
+#   which are imported using `from ClassName import ClassName`
+# - ALWAYS use snake_case when referring to variables and functions
+# - ALWAYS Use PascalCase for Objects and Classes
+## /NOTES ###
+
 
 from ctypes import Array
 from enum import Enum
@@ -8,56 +16,41 @@ import random
 import time
 import turtle
 
-# Scripted Modules
+### Scripted Modules 
 from Player import Player
 
-# global variable definitions
-Duck = {"Name": "Duck", "MaxHP": 5, "HP": 5,  "Damage": random.randint(1,6)}
-Crab = {"Name": "Crab", "MaxHP": 10, "HP": 10, "Damage": random.randint(1, 3)}
-EnemyNames = ["Crab", "Bee", "Duck", "Trout"]
-Enemies = []
-PlayerHP = 20
-# class definitions
-
-class Enemy(Entity):
-    def __init__(self, args: Array) -> None:
-        self.health = args["health"]
-        self.Name = args["Name"]
-        #A list of all the acitons the enemy can do
-        self.AI = args["AI"]
 
 
+### Global Variables 
+duck = {"name": "duck", "max_hp": 5, "hp": 5,  "damage": random.randint(1,6)}
+crab = {"name": "crab", "max_hp": 10, "hp": 10, "damage": random.randint(1, 3)}
 
-player = Player({"health": 20, "stamina": 10, "strength": 10})
-print(player.health)
-
-
-#Attack Actions ~Kit
-#This method probably sucks someone find a better version ~Kit
-def Hit():
-    return random.randint(2, 5)
-NormalFighterAI = [Hit()]
-
-player = Player({"health": 20, "stamina": 10, "strength": 10})
-print(player.health)
-for i in range(4):
-    i = Enemy({"health": random.randint(5, 15), "Name": random.choice(EnemyNames), "AI": NormalFighterAI})
-    Enemies.append(i)
+enemies = [duck, crab]
+### /Global Variables 
 
 
-print(NormalFighterAI[0]);
-# input validation
+### Input Validation 
 
-# inventory
+### /Input Validation 
 
-# action loop
-#Im going to work on this ~Cormac
-# game loop
+
+
+### Inventory 
+
+### /Inventory 
+
+
+
+### Action Loop 
+# I'm going to work on this ~Cormac
+### /Action Loop 
+
+
+
+### Game Loop 
 def Combat():
-    chosenEnemy = Enemies[random.randrange(len(Enemies))]
-    print("You encountered a "+ chosenEnemy.Name+ " it has " + str(chosenEnemy.health) + " Health\n")
-    
-
+	print("You encountered a "+ str(Enemies[random.randrange(len(Enemies))]["Name"])+ "\n")
 Combat()
+### /Game Loop 
 
 input() # end of file pause
