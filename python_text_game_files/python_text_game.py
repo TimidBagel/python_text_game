@@ -34,12 +34,18 @@ class Player(Entity):
             "accessories": [],
             "consumables": []
         }
+
 class Enemy(Entity):
     def __init__(self, args: Array) -> None:
         self.health = args["health"]
         self.Name = args["Name"]
         #A list of all the acitons the enemy can do
         self.AI = args["AI"]
+
+
+
+player = Player({"health": 20, "stamina": 10, "strength": 10})
+print(player.health)
 
 
 #Attack Actions ~Kit
