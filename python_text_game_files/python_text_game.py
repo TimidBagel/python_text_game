@@ -1,33 +1,48 @@
 # python_text_game.py
-# Authors: Drew, Iain, Jun, Robert, Cormac, Andrew
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
 # A small text based adventure game
-print("Welcome to the dungeon...")
+
+from ctypes import Array
+from enum import Enum
 import random
 import time
 import turtle
 
 # global variable definitions
-health=20
-
 
 # class definitions
+class Entity:
+    def __init__(self, args):
+        health
+        stamina
+        strength
+        inventory
 
+class Player(Entity):
+    def __init__(self, args: Array) -> None:
+        self.health = args["health"]
 
+#       Init empty inventory
+        self.inventory = {
+            "weapons": [],
+            "accessories": [],
+            "consumables": []
+        }
+
+player = Player({"health": 10})
+print(player.health)
 
 # input validation
 
-
-
 # inventory
 
+temp_player = Player({"health": 10})
 
+temp_player.inventory['weapons'].append("copper_sword")
+print(temp_player.inventory['weapons'])
 
 # action loop
 
-
-
 # game loop
-
-
 
 input() # end of file pause
