@@ -10,9 +10,13 @@ import turtle
 
 # global variable definitions
 
-
-
 # class definitions
+class Entity:
+    def __init__(self, args):
+        health
+        stamina
+        strength
+        inventory
 
 class Player(Entity):
     def __init__(self, args: Array) -> None:
@@ -30,18 +34,10 @@ print(player.health)
 
 # input validation
 
-
-
 # inventory
-
-
 
 # action loop
 
-
-
 # game loop
-
-
 
 input() # end of file pause
