@@ -1,5 +1,5 @@
 # python_text_game.py
-# Authors: Drew, Iain, Jun, Robert, Cormac, Andrew
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
 # A small text based adventure game
 
 import random
