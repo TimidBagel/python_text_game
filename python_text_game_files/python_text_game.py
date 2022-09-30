@@ -1,22 +1,33 @@
 # python_text_game.py
-# Authors: Iain, Jun, Robert, Cormac, Andrew
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
 # A small text based adventure game
 
 import random
 import time
 import turtle
-import men
 
 # global variable definitions
 
+
+
 # class definitions
+
+
 
 # input validation
 
+
+
 # inventory
+
+
 
 # action loop
 
+
+
 # game loop
+
+
 
 input() # end of file pause
