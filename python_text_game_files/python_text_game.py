@@ -17,13 +17,13 @@ PlayerHP = 20
 # class definitions
 class Entity:
     def __init__(self, args):
-        health
-        stamina
-        strength
-        inventory
+        self.health
+        self.stamina
+        self.strength
+        self.inventory
 
 class Player(Entity):
-    def __init__(self, args: Array) -> None:
+    def __init__(self, args) -> None:
         self.health = args["health"]
         self.stamina = args["stamina"]
         self.strength = args["strength"]
@@ -38,6 +38,13 @@ class Player(Entity):
 player = Player({"health": 20, "stamina": 10, "strength": 10})
 print(player.health)
 
+# misc
+def sort_items(items_dict):
+    new_dict = {"weapons": [], "accessories": [], "consumables": []}
+
+
+def drop_loot(entity, player):
+    dropped = entity.inventory
 
 # input validation
 
