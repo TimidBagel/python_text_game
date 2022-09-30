@@ -36,7 +36,7 @@ class Player(Entity):
         }
 
 player = Player({"health": 20, "stamina": 10, "strength": 10})
-print(player.health)
+print(f"Current health: {player.health}")
 
 
 # input validation
