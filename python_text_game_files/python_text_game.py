@@ -46,13 +46,15 @@ class Enemy(Entity):
 #This method probably sucks someone find a better version ~Kit
 def Hit():
     return random.randint(2, 5)
-NormalFighterAI = [Hit()]
+def Hunker():
+    return random.randint(2,5)
+CrabAI = [Hit(), Hunker()]
 
 player = Player({"health": 20, "stamina": 10, "strength": 10})
 print(player.health)
-for i in range(4):
-    i = Enemy({"health": random.randint(5, 15), "Name": random.choice(EnemyNames), "AI": NormalFighterAI})
-    Enemies.append(i)
+
+Crab = Enemy({"health": 15, "Name": "Crab", "AI": CrabAI})
+Enemies.append(i)
 
 
 print(NormalFighterAI[0]);
