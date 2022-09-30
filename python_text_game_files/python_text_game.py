@@ -21,6 +21,8 @@ class Entity:
 class Player(Entity):
     def __init__(self, args: Array) -> None:
         self.health = args["health"]
+        self.stamina = args["stamina"]
+        self.strength = args["strength"]
 
 #       Init empty inventory
         self.inventory = {
@@ -29,7 +31,7 @@ class Player(Entity):
             "consumables": []
         }
 
-player = Player({"health": 10})
+player = Player({"health": 20, "stamina": 10, "strength": 10})
 print(player.health)
 
 # input validation
