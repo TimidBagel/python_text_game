@@ -1,5 +1,5 @@
 # python_text_game.py
-# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Patrick
 # A small text based adventure game
 
 from ctypes import Array
@@ -14,7 +14,7 @@ Crab = {"Name": "Crab", "MaxHP": 10, "HP": 10, "Damage": random.randint(1, 3)}
 Bee = {"Name": "Bee", "MaxHP": 4, "HP": 4, "Damage": random.randint(1, 2)}
 Trout = {"Name": "Trout" "MaxHP": 7 "HP": 7 "Damage": random.randint(2, 5)}
 
-Enemies = [Duck, Crab, Bee]
+Enemies = [Duck, Crab, Bee, Trout]
 PlayerHP = 20
 # class definitions
 class Entity:
