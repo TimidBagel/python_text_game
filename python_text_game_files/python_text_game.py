@@ -1,6 +1,7 @@
+import random
+import time
 # python_text_game.py
 # Authors: Iain, Jun, Robert, Cormac, Andrew
 # A small text based adventure game
 
-#jim
 input() # end of file pause
