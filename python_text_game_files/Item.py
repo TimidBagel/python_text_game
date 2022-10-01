@@ -13,11 +13,14 @@ class Item:
 class ItemWeapon(Item):
     def __init__(self) -> None:
         damage : int
+        effect = EffectTypes
+        target = EffectTarget
 
 class ItemAccessory(Item):
     def __init__(self) -> None:
-#       Someone else can decide what goes here. Not sure how the system works yet ~Ben
-        pass
+        effect : EffectTypes
+        target : EffectTarget
+        
 
 class ItemConsumable(Item):
     def __init__(self, effect, intensity) -> None:
@@ -34,3 +37,15 @@ class ConsumableTypes(Enum):
     HEALTH = 0
     DAMAGE = 1
     DEFENSE = 2
+class EffectTypes(Enum):
+    #We will definitly add more stuff here ~Kit
+    POISON = 1
+    WEAKNESS = 2
+    STRENGTH = 3
+    
+    NOTHING = 0
+
+class EffectTarget(Enum):
+    WEAPON = 0
+    SELF = 1
+    ENEMY = 2
