@@ -19,7 +19,7 @@ import turtle
 ### Scripted Modules 
 from Player import Player
 from Entity import Entity
-from Entity import Enemy
+from Enemy import Enemy
 
 
 
