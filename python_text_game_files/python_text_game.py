@@ -65,6 +65,7 @@ enemies.append(Crab)
 
 ### Game Loop 
 def Combat():
+    
     chosenEnemy = enemies[random.randrange(len(enemies))]
     print("You encountered a "+ chosenEnemy.Name+ " it has " + str(chosenEnemy.health) + " Health\n")
     Inp = input("What would you like to do?\n1. Strike \n2. Block\n")
