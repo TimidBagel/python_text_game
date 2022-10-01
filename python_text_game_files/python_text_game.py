@@ -19,7 +19,7 @@ import turtle
 ### Scripted Modules 
 from Player import Player
 from Entity import Entity
-from Entity import Enemy
+
 
 
 
@@ -74,7 +74,7 @@ def Combat():
          print(chosenEnemy.Name +" attacked you for " + str(EnemAct["Hurt"]) + " Damage\n")
          player.health -= EnemAct["Hurt"]
     if "Heal" in EnemAct:
-         chosenEnemy.health += EnemAct["Heal"]
+        chosenEnemy.health += EnemAct["Heal"]
         print(chosenEnemy.Name +" healed for " + str(EnemAct["Heal"]) + " Damage. It now has " + str(chosenEnemy.health) + " Health")
         #We will need to also add max HP so healing enemies don't gain copius amounts of health. (Same for the player)
        
