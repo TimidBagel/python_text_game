@@ -18,6 +18,10 @@ import turtle
 
 ### Scripted Modules 
 from Player import Player
+from Entity import Entity
+from Entity import Enemy
+
+
 
 
 
@@ -25,7 +29,7 @@ from Player import Player
 duck = {"name": "duck", "max_hp": 5, "hp": 5,  "damage": random.randint(1,6)}
 crab = {"name": "crab", "max_hp": 10, "hp": 10, "damage": random.randint(1, 3)}
 
-enemies = [duck, crab]
+enemies = []
 ### /Global Variables 
 
 
@@ -44,12 +48,35 @@ enemies = [duck, crab]
 ### Action Loop 
 # I'm going to work on this ~Cormac
 ### /Action Loop 
+#Attack Actions ~Kit
+#This method probably sucks someone find a better version ~Kit
+def HitLow():
+    return {"Hurt": random.randint(1,3)}
+def HealLow():
+    return {"Heal": random.randint(2,4)}
+CrabAI = [HitLow(), HealLow()]
 
+player = Player({"health": 20, "stamina": 10, "strength": 10})
+print(player.health)
+
+Crab = Enemy({"health": 15, "Name": "Crab", "AI": CrabAI})
+enemies.append(Crab)
 
 
 ### Game Loop 
 def Combat():
-	print("You encountered a "+ str(Enemies[random.randrange(len(Enemies))]["Name"])+ "\n")
+    chosenEnemy = enemies[random.randrange(len(enemies))]
+    print("You encountered a "+ chosenEnemy.Name+ " it has " + str(chosenEnemy.health) + " Health\n")
+    Inp = input("What would you like to do?\n1. Strike \n2. Block\n")
+    EnemAct = random.choice(chosenEnemy.AI)
+    #Sorry about the constant if checks but I couldn't see a way around it ~Kit
+    if "Hurt" in EnemAct:
+         print(chosenEnemy.Name +" attacked you for " + str(EnemAct["Hurt"]) + " Damage\n")
+         player.health -= EnemAct["Hurt"]
+    if "Heal" in EnemAct:
+        print(chosenEnemy.Name +" healed for " + str(EnemAct["Heal"]) + " Damage. It now has " + str(chosenEnemy.health) + " Health")
+        #We will need to also add max HP so healing enemies don't gain copius amounts of health. (Same for the player)
+        chosenEnemy.health += EnemAct["Heal"]
 Combat()
 ### /Game Loop 
 
