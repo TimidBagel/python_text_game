@@ -25,9 +25,10 @@ from Entity import Enemy
 
 
 
-### Global Variables 
-duck = {"name": "duck", "max_hp": 5, "hp": 5,  "damage": random.randint(1,6)}
-crab = {"name": "crab", "max_hp": 10, "hp": 10, "damage": random.randint(1, 3)}
+### Global Variables
+#We don't really need these any more (See how we declare enemies below) They might be good for reference tho so ill just comment them out ~Kit
+#duck = {"name": "duck", "max_hp": 5, "hp": 5,  "damage": random.randint(1,6)}
+#crab = {"name": "crab", "max_hp": 10, "hp": 10, "damage": random.randint(1, 3)}
 
 enemies = []
 ### /Global Variables 
@@ -50,34 +51,34 @@ enemies = []
 ### /Action Loop 
 #Attack Actions ~Kit
 #This method probably sucks someone find a better version ~Kit
-def HitLow():
+def hit_low():
     return {"Hurt": random.randint(1,3)}
-def HealLow():
+def heal_low():
     return {"Heal": random.randint(2,4)}
-CrabAI = [HitLow(), HealLow()]
+crab_ai = [hit_low(), heal_low()]
 
 player = Player({"health": 20, "stamina": 10, "strength": 10})
 print(player.health)
 
-Crab = Enemy({"health": 15, "Name": "Crab", "AI": CrabAI})
-enemies.append(Crab)
+crab = Enemy({"health": 15, "Name": "Crab", "AI": crab_ai})
+enemies.append(crab)
 
 
 ### Game Loop 
-def Combat():
-    chosenEnemy = enemies[random.randrange(len(enemies))]
-    print("You encountered a "+ chosenEnemy.Name+ " it has " + str(chosenEnemy.health) + " Health\n")
+def combat():
+    chosen_enemy = enemies[random.randrange(len(enemies))]
+    print("You encountered a "+ chosen_enemy.Name+ " it has " + str(chosen_enemy.health) + " Health\n")
     Inp = input("What would you like to do?\n1. Strike \n2. Block\n")
-    EnemAct = random.choice(chosenEnemy.AI)
+    enem_act = random.choice(chosen_enemy.AI)
     #Sorry about the constant if checks but I couldn't see a way around it ~Kit
-    if "Hurt" in EnemAct:
-         print(chosenEnemy.Name +" attacked you for " + str(EnemAct["Hurt"]) + " Damage\n")
-         player.health -= EnemAct["Hurt"]
-    if "Heal" in EnemAct:
-        print(chosenEnemy.Name +" healed for " + str(EnemAct["Heal"]) + " Damage. It now has " + str(chosenEnemy.health) + " Health")
+    if "Hurt" in enem_act:
+         print(chosen_enemy.Name +" attacked you for " + str(enem_act["Hurt"]) + " Damage\n")
+         player.health -= enem_act["Hurt"]
+    if "Heal" in enem_act:
+        print(chosen_enemy.Name +" healed for " + str(enem_act["Heal"]) + " Damage. It now has " + str(chosen_enemy.health) + " Health")
         #We will need to also add max HP so healing enemies don't gain copius amounts of health. (Same for the player)
-        chosenEnemy.health += EnemAct["Heal"]
-Combat()
+        chosen_enemy.health += enem_act["Heal"]
+combat()
 ### /Game Loop 
 
 input() # end of file pause
