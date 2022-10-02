@@ -151,7 +151,6 @@ def combat():
         
         print("What will you do?\n")
         time.sleep(0.01)
-
         print("Player Actions:")
         time.sleep(0.01)
         for action in player.actions:
