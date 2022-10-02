@@ -26,6 +26,7 @@ class Entity:
 
         self.actions : array = args["actions"]
         self.weapon_effect : StatusEffect = args["weapon_effect"]
+        self.max_stamina : int = args["max_stamina"]
         
 
 #   Sets `health` to 0 if its below 0
