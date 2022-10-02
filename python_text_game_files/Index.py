@@ -16,6 +16,8 @@ import turtle
 ### Scripted Modules 
 from Entity import Entity, EntityActions
 from Item import Item, ItemTypes
+from InputValidator import input_float, input_int, input_str
+from StatusEffect import StatusEffect
 
 
 ### Global Variables
@@ -35,7 +37,7 @@ crab = Entity({
     "strength": 5,
     "poison": 0,
     "skill": 2,
-    "ai": [0, 3]
+    "actions": [EntityActions.STRIKE, EntityActions.ADD_STATUS]
 })
 
 goose = Entity({
@@ -45,7 +47,7 @@ goose = Entity({
     "strength": 8,
     "poison": 0,
     "skill": 0,
-    "ai": [0]
+    "actions": [EntityActions.STRIKE]
 })
 enemies.append(crab)
 enemies.append(goose)
@@ -57,7 +59,7 @@ player = Entity({
     "strength": 10,
     "poison": 0,
     "skill": 5,
-    "ai": []
+    "actions": [EntityActions.STRIKE, EntityActions.BLOCK]
 })
 ### /Global Variables 
 
@@ -84,6 +86,8 @@ player = Entity({
 def combat():
 #   Set enemy if unnassigned
 
+    if enemies == []: return
+
     global current_enemy
     if current_enemy == -1:
         current_enemy = random.randrange(len(enemies))
@@ -94,28 +98,24 @@ def combat():
     
     global player_turn
     if player_turn: # IF its the players turn
+        print("|| Players Turn")
         
         print(f"{enemy.name.capitalize()}:")
         print(f"| Health: {str(enemy.health)}")
-        if player.poison >= 1:
-            player.health -= player.poison
-            print(f"You took {player.poison} damage from poison. You now have {player.health} health remaining")
-            player.apply_damage(player.poison)
-            player.poison -= 1
-            if player.health < 1:
-                print("You have died!")
-                input()
         
-            
-            #Please contact me if you think poison damage shouldn't scale up and be a hard value ~Kit
+#       Poison check
+        player.call_status(StatusEffect.POISON, 1)
+        if bool(player.status[StatusEffect.POISON] > 0): print(f"You took 1 damage from poison. You now have {player.health} health remaining")
+        player.status[StatusEffect.POISON] -= 1
+        
         print("What will you do?")
         print("Player Actions:")
-        for action in EntityActions:
+        for action in player.actions:
             print(f"| {action.value}: {action.name.lower().capitalize()}")
 
     #   Replace with `input_int` when `InputValidation` is made ~Ben
       
-        action = int(input("Choose an Action: "))
+        action = input_int("Choose an Action: ")
         print("")
 
         match action:
@@ -129,31 +129,28 @@ def combat():
                     current_enemy = -1
             case EntityActions.BLOCK.value:
                 print("You chose to block")
-            case EntityActions.ESCAPE.value:
-                print("You chose to block")
 
 #       End Player Turn
         player_turn = False
     else: # IF its the enemies turn
+        print("|| Enemy Turn")
       
-        enem_action = random.choice(enemy.ai)
+        enem_action = random.choice((enemy.actions))
         match enem_action:
             case EntityActions.STRIKE.value:
-                player.apply_damage(enemy.strength) #We still need to invent blocks ~Kit
+                player.apply_damage(enemy.strength) 
+                #We still need to invent blocks ~Kit
+                # I can handle this later ~Ben
                 print(f"{enemy.name.capitalize()} hit you for {enemy.strength} damage. You now have {player.health} health left")
-            case EntityActions.ADDPOISON.value:
-                player.poison += enemy.skill
+            case EntityActions.ADD_STATUS.value:
+                # We should make an `add_status` function to `Entity`
+                # I want a bleed status that deals damage when you hit something or use a skill ~Ben
+                player.apply_status(StatusEffect.POISON, enemy.skill)
                 print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
 #       End Enemy Turn
-        if player.health > 0:
-            player_turn = True
-        else:
-            print("You have died!")
-            input()
-            
-        
+        player_turn = True
 
-while enemies != [] and player.health > 0:
+while enemies != [] or not player.is_dead():
     combat()
 ### /Game Loop 
 

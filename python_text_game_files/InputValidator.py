@@ -9,7 +9,7 @@
 # OR you could add a second parameter; It's an optional parameter
 # input_float(<text>, <text you want to print out WHEN the input is invalid>)
 
-def input_float(text : String, *callback) -> float:
+def input_float(text : str, *callback) -> float:
     i = (input(text))
     while type(i) != float:
         try:
@@ -23,7 +23,7 @@ def input_float(text : String, *callback) -> float:
     else:
         return float(i)
 
-def input_int(text : String, *callback) -> int:
+def input_int(text : str, *callback) -> int:
     i = (input(text))
     while type(i) != int:
         try:
