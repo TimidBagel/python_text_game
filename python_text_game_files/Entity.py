@@ -25,6 +25,7 @@ class Entity:
             self.status[s] = 0
 
         self.actions : array = args["actions"]
+        self.weapon_effect : StatusEffect = args["weapon_effect"]
         
 
 #   Sets `health` to 0 if its below 0
@@ -48,8 +49,13 @@ class EntityActions(Enum): #We need some way to remove actions for enemies form 
     STRIKE = 0
     BLOCK = 1
     ESCAPE = 2
-    ADD_STATUS = 3
-#   I think this could be a cool feature to add. Each weapon you get has unique skills ~Ben
+    ADD_POISON = 3
+    HEAL = 4
+# We need different actions for the statuses bunching them all up into one has several issues. A. This means an enemy couldn't do more than one status (Limits enemy dynamism) B. We need different action text for each of them. you can't spit at someone and make them bleed. ~Kit
+#Ok Teeeeeechnically i found a way for it to work with one thing (See the StatusEffect script as well as some of the combat script) But I still think having one for each is better as it allows for more unique enemies and we should avoid having a ton of lists lying aroun ~Kit
+
+#I think this could be a cool feature to add. Each weapon you get has unique skills ~Ben
+
 #   Good idea, this could also be used for an enemy unique skill ~Kit
 #   Scratch that, Im working on enemy AI to be even cooler :D ~Kit
 

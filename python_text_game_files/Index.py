@@ -37,7 +37,8 @@ crab = Entity({
     "strength": 5,
     "poison": 0,
     "skill": 2,
-    "actions": [EntityActions.STRIKE, EntityActions.ADD_STATUS]
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
+    "weapon_effect": None
 })
 
 goose = Entity({
@@ -46,11 +47,23 @@ goose = Entity({
     "stamina": 10, 
     "strength": 8,
     "poison": 0,
-    "skill": 0,
-    "actions": [EntityActions.STRIKE]
+    "skill": 1,
+    "actions": [EntityActions.STRIKE.value],
+    "weapon_effect": StatusEffect.BLEED
+})
+turtle = Entity({
+    "name": "turtle",
+    "health": 50, 
+    "stamina": 10, 
+    "strength": 1,
+    "poison": 0,
+    "skill": 12,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "weapon_effect": None
 })
 enemies.append(crab)
 enemies.append(goose)
+enemies.append(turtle)
 
 player = Entity({
     "name": "player",
@@ -59,7 +72,8 @@ player = Entity({
     "strength": 10,
     "poison": 0,
     "skill": 5,
-    "actions": [EntityActions.STRIKE, EntityActions.BLOCK]
+    "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
+    "weapon_effect": None
 })
 ### /Global Variables 
 
@@ -104,9 +118,14 @@ def combat():
         print(f"| Health: {str(enemy.health)}")
         
 #       Poison check
-        player.call_status(StatusEffect.POISON, 1)
-        if bool(player.status[StatusEffect.POISON] > 0): print(f"You took 1 damage from poison. You now have {player.health} health remaining")
-        player.status[StatusEffect.POISON] -= 1
+        
+        if bool(player.status[StatusEffect.POISON] > 0):
+            player.call_status(StatusEffect.POISON, 1)
+            print(f"You took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
+            player.status[StatusEffect.POISON] -= 1
+        #Bleed Check
+       
+            
         
         print("What will you do?")
         print("Player Actions:")
@@ -123,12 +142,21 @@ def combat():
                 enemy.apply_damage(player.strength)
                 print(f"Struck {enemy.name.capitalize()} with {player.strength} damage")
                 print(f"{enemy.name.capitalize()} now has {enemy.health} Health")
+                if bool(player.status[StatusEffect.BLEED] > 0):
+                    print(f"Your rapid movements worsened your bleeding.")
+                    player.call_status(StatusEffect.BLEED, 1)
+                    print(f"You took 1 damage from bleeding. You now have {player.health} health remaining")
+                    player.status[StatusEffect.BLEED] += 1
                 if enemy.is_dead():
                     print(f"\n{enemy.name.capitalize()} has fallen in battle")
                     enemies.remove(enemy)
                     current_enemy = -1
+                    player_turn = True
             case EntityActions.BLOCK.value:
                 print("You chose to block")
+                if bool(player.status[StatusEffect.BLEED] > 0):
+                    print(f"Your resting lessened your bleeding.")
+                    player.status[StatusEffect.BLEED] -= 2
 
 #       End Player Turn
         player_turn = False
@@ -142,16 +170,27 @@ def combat():
                 #We still need to invent blocks ~Kit
                 # I can handle this later ~Ben
                 print(f"{enemy.name.capitalize()} hit you for {enemy.strength} damage. You now have {player.health} health left")
-            case EntityActions.ADD_STATUS.value:
+                if enemy.weapon_effect != None:
+                    player.apply_status(enemy.weapon_effect, enemy.skill)
+                    print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon_effect.name} to you!")
+                    #I will try and find a way so enemy attacks can have more than one extra effect, will probably do something with a for loop and such ~Kit
+            case EntityActions.ADD_POISON.value:
                 # We should make an `add_status` function to `Entity`
                 # I want a bleed status that deals damage when you hit something or use a skill ~Ben
+                #Me Too! I'll do that  ~Kit
+                
                 player.apply_status(StatusEffect.POISON, enemy.skill)
                 print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
+            case EntityActions.HEAL.value:
+                enemy.apply_damage(-enemy.skill) #Using negative attack damage for healing Big brain ~Kit
+                print(f"{enemy.name.capitalize()} healed for {enemy.skill} damage. It now has {enemy.health} health left")
 #       End Enemy Turn
         player_turn = True
 
-while enemies != [] or not player.is_dead():
+while enemies != [] and not player.is_dead():
     combat()
+if player.is_dead():
+    print("You have died!")
 ### /Game Loop 
 
 input() # end of file pause
