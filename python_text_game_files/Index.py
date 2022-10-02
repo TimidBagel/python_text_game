@@ -101,8 +101,19 @@ player = Entity({
 
 
 ### Game Loop 
+def display_entity_combat_info(entities):
+    print()
+    for entity in entities:
+        time.sleep(0.01)
+        print(f"{entity.name.capitalize()}:")
+        time.sleep(0.01)
+        print(f"| Health: {str(entity.health)}\n")
+        time.sleep(0.01)
+        print(f"|Stamina: {str(entity.stamina)}")
 
 def combat():
+    input() # press "enter" to continue turns
+    time.sleep(0.1)
 #   Set enemy if unnassigned
 
     if enemies == []: return
@@ -111,35 +122,41 @@ def combat():
     if current_enemy == -1:
         current_enemy = random.randrange(len(enemies))
         print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
+        time.sleep(0.1)
        
 
     enemy : Entity = enemies[current_enemy]
     
     global player_turn
     if player_turn: # IF its the players turn
-        print("|| Players Turn")
-        
-        print(f"{enemy.name.capitalize()}:")
-        print(f"| Health: {str(enemy.health)}")
+        print("|| Player's Turn")
         
 #       Poison check
         
         if bool(player.status[StatusEffect.POISON] > 0):
             player.call_status(StatusEffect.POISON, 1)
-            print(f"You took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
+            print(f"\nYou took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
             player.status[StatusEffect.POISON] -= 1
+            time.sleep(0.01)
         #Bleed Check
        
+
         if player.stamina < player.max_stamina:
             player.stamina += 1
             #We can code in a max stamina stat later as well as a stamina recovery stat you guys don't like to have a ton a variables floating around ~Kit
             #Ive added max stamina ~Kit
-        print(f"|Your Health: {player.health}")
-        print(f"|Your Stamina: {player.stamina}")
-        print("What will you do?")
+
+        display_entity_combat_info([player, enemy])
+        time.sleep(0.01)
+        
+        print("What will you do?\n")
+        time.sleep(0.01)
+
         print("Player Actions:")
+        time.sleep(0.01)
         for action in player.actions:
             print(f"| {action.value}: {action.name.lower().capitalize()}")
+            time.sleep(0.01)
 
     #   Replace with `input_int` when `InputValidation` is made ~Ben
       
@@ -152,11 +169,15 @@ def combat():
                     
                     enemy.apply_damage(player.strength)
                     print(f"Struck {enemy.name.capitalize()} with {player.strength} damage")
+                    time.sleep(0.01)
                     print(f"{enemy.name.capitalize()} now has {enemy.health} Health")
+                    time.sleep(0.01)
                     if bool(player.status[StatusEffect.BLEED] > 0):
                         print(f"Your rapid movements worsened your bleeding.")
+                        time.sleep(0.01)
                         player.call_status(StatusEffect.BLEED, 1)
                         print(f"You took 1 damage from bleeding. You now have {player.health} health remaining")
+                        time.sleep(0.01)
                         player.status[StatusEffect.BLEED] += 1
                     player.stamina -= 3
                 else:
@@ -172,6 +193,8 @@ def combat():
                     player.stamina = 10
             case EntityActions.BLOCK.value:
                 print("You chose to block")
+                time.sleep(0.01)
+                
                 if bool(player.status[StatusEffect.BLEED] > 0):
                     print(f"Your resting lessened your bleeding.")
                     player.status[StatusEffect.BLEED] -= 2
