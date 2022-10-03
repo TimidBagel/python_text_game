@@ -28,7 +28,9 @@ global player_turn # This is used to keep track if the last turn was the players
 player_turn = True
 
 global enemies
+global npcs
 enemies = []
+npcs = []
 
 crab = Entity({
     "name": "crab",
@@ -69,6 +71,19 @@ enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 
+fred = Entity({
+    "name": "fred",
+    "health": 9001,
+    "stamina": 9001,
+    "strength": 9001,
+    "poison": 9001,
+    "skill": 9001,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "weapon_effect": None,
+    "max_stamina": 9001
+})
+npcs.append(fred)
+
 player = Entity({
     "name": "player",
     "health": 30, 
@@ -107,9 +122,9 @@ def display_entity_combat_info(entities):
         time.sleep(0.01)
         print(f"{entity.name.capitalize()}:")
         time.sleep(0.01)
-        print(f"| Health: {str(entity.health)}\n")
+        print(f"| Health: {str(entity.health)}")
         time.sleep(0.01)
-        print(f"|Stamina: {str(entity.stamina)}")
+        print(f"| Stamina: {str(entity.stamina)}\n")
 
 def combat():
     input() # press "enter" to continue turns
@@ -125,7 +140,7 @@ def combat():
         time.sleep(0.1)
        
 
-    enemy : Entity = enemies[current_enemy]
+    enemy : Entity = npcs[0]
     
     global player_turn
     if player_turn: # IF its the players turn
