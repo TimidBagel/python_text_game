@@ -41,7 +41,9 @@ crab = Entity({
     "skill": 2,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     "weapon_effect": None,
-    "max_stamina": 10
+    "max_stamina": 10,
+    "block_amt": 0
+    
     
 })
 
@@ -54,7 +56,9 @@ goose = Entity({
     "skill": 1,
     "actions": [EntityActions.STRIKE.value],
     "weapon_effect": StatusEffect.BLEED,
-    "max_stamina": 5
+    "max_stamina": 5,
+    "block_amt": 0
+    
 })
 turtle = Entity({
     "name": "turtle",
@@ -63,9 +67,11 @@ turtle = Entity({
     "strength": 1,
     "poison": 0,
     "skill": 12,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     "weapon_effect": None,
-    "max_stamina": 20
+    "max_stamina": 20,
+    "block_amt": 5
+    
 })
 enemies.append(crab)
 enemies.append(goose)
@@ -80,7 +86,9 @@ fred = Entity({
     "skill": 9001,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
     "weapon_effect": None,
-    "max_stamina": 9001
+    "max_stamina": 9001,
+    "block_amt": 0
+    
 })
 npcs.append(fred)
 
@@ -93,7 +101,9 @@ player = Entity({
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
     "weapon_effect": None,
-    "max_stamina": 10
+    "max_stamina": 10,
+    "block_amt": 3
+     
 })
 ### /Global Variables 
 
@@ -164,7 +174,7 @@ def combat():
 
         display_entity_combat_info([player, enemy])
         time.sleep(0.01)
-        
+        player.block = 0
         print("What will you do?\n")
         time.sleep(0.01)
         print("Player Actions:")
@@ -181,9 +191,12 @@ def combat():
         match action:
             case EntityActions.STRIKE.value:
                 if player.stamina > 2:
-                    
-                    enemy.apply_damage(player.strength)
-                    print(f"Struck {enemy.name.capitalize()} with {player.strength} damage")
+                    dmg = player.strength - enemy.block
+                    if dmg < 1:
+                        dmg = 0
+                    enemy.apply_damage(dmg) 
+                   
+                    print(f"Struck {enemy.name.capitalize()} with {dmg} damage")
                     time.sleep(0.01)
                     print(f"{enemy.name.capitalize()} now has {enemy.health} Health")
                     time.sleep(0.01)
@@ -207,12 +220,14 @@ def combat():
                         player.status[s] = 0
                     player.stamina = 10
             case EntityActions.BLOCK.value:
-                print("You chose to block")
+                print(f"You added {player.block_amt} block to self!")
                 time.sleep(0.01)
-                
+                player.block += player.block_amt
                 if bool(player.status[StatusEffect.BLEED] > 0):
                     print(f"Your resting lessened your bleeding.")
-                    player.status[StatusEffect.BLEED] -= 2
+                    player.status[StatusEffect.BLEED] -= 4
+                    if player.status[StatusEffect.BLEED] < 0:
+                        player.status[StatusEffect.BLEED] = 0
 
 #       End Player Turn
         if not enemy.is_dead():
@@ -220,6 +235,7 @@ def combat():
         
     else: # IF its the enemies turn
         print("|| Enemy Turn")
+        enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
       
@@ -228,11 +244,12 @@ def combat():
             
             match enem_action:
                 case EntityActions.STRIKE.value:
-                   
-                    player.apply_damage(enemy.strength) 
-                        #We still need to invent blocks ~Kit
-                        # I can handle this later ~Ben
-                    print(f"{enemy.name.capitalize()} hit you for {enemy.strength} damage. You now have {player.health} health left")
+                    dmg = enemy.strength - player.block
+                    if dmg < 1:
+                        dmg = 0
+                    player.apply_damage(dmg) 
+                      
+                    print(f"{enemy.name.capitalize()} hit you for {dmg} damage. You now have {player.health} health left")
                     if enemy.weapon_effect != None:
                         player.apply_status(enemy.weapon_effect, enemy.skill)
                         print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon_effect.name} to you!")
@@ -253,6 +270,10 @@ def combat():
                     enemy.apply_damage(-enemy.skill) #Using negative attack damage for healing Big brain ~Kit
                     print(f"{enemy.name.capitalize()} healed for {enemy.skill} damage. It now has {enemy.health} health left")
                     enemy.stamina -= 4
+                case EntityActions.BLOCK.value:
+                    enemy.block += enemy.block_amt
+                    print(f"{enemy.name.capitalize()} added {enemy.block_amt} block to self!")
+                
             if enemy.stamina < 0:
                 enemy.stamina = 0
             
