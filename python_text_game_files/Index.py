@@ -161,7 +161,7 @@ player = Entity({
     "name": "player",
     "health": 30, 
     "stamina": 10, 
-    "strength": 10,
+    "strength": 10000000,
     "poison": 0,
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
@@ -204,11 +204,12 @@ def progression(): #progression loop wip -p
         print(f"after fighting through the seemingly endless amounts of animals you have come across...")
         if enc_counter == 1:
             print("another enemy!")
+            enemy_encounter_grp += 1
             combat()
         if enc_counter == 2:
             npc_encounters = npc_encounters
             if npc_encounters == 1:
-                current_npc = npcs(martyr)
+                current_npc = npcs[martyr] #martyr 
                 print(f"you have come across the {current_npc.name.capitalize()}") # martyr is still buggy - pat
                 has_chosen = False
                 while has_chosen == False:
@@ -218,7 +219,7 @@ def progression(): #progression loop wip -p
                     2) decline (move on)
                     3) fight the martyr""")
         if enc_counter == 3:
-            print("treasure")
+            print("treasure") # treasure is a wip sorry -pat
 ### /Action Loop 
 
 ### Character Creation
