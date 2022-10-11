@@ -5,7 +5,7 @@ from array import array
 from enum import Enum
 from Item import ItemTypes
 from StatusEffect import StatusEffect
-
+import random
 
 class Entity:
     def __init__(self, args) -> None:
@@ -35,6 +35,7 @@ class Entity:
 
     def apply_status(self, status: StatusEffect, amt: int) -> None:
         self.status[status] = amt
+        
 
     def call_status(self, status: StatusEffect, amt: int):
         match status:
@@ -45,13 +46,17 @@ class Entity:
 
     def is_dead(self) -> bool:
         return self.health <= 0
-
 class EntityActions(Enum): #We need some way to remove actions for enemies form the player action list (And i dont think ben would be happy if I made a new Enum) ~Kit
     STRIKE = 0
     BLOCK = 1
     ESCAPE = 2
     ADD_POISON = 3
     HEAL = 4
+
+#       End Enemy Turn
+       
+
+
 # We need different actions for the statuses bunching them all up into one has several issues. A. This means an enemy couldn't do more than one status (Limits enemy dynamism) B. We need different action text for each of them. you can't spit at someone and make them bleed. ~Kit
 #Ok Teeeeeechnically i found a way for it to work with one thing (See the StatusEffect script as well as some of the combat script) But I still think having one for each is better as it allows for more unique enemies and we should avoid having a ton of lists lying aroun ~Kit
 

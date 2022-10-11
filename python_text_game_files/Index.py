@@ -140,7 +140,8 @@ def combat():
         time.sleep(0.1)
        
 
-    enemy : Entity = npcs[0]
+    #enemy : Entity = npcs[0]
+    enemy : Entity = enemies[current_enemy]
     
     global player_turn
     if player_turn: # IF its the players turn
@@ -254,11 +255,13 @@ def combat():
                     enemy.stamina -= 4
             if enemy.stamina < 0:
                 enemy.stamina = 0
-            print(f"{enemy.stamina}")
+            
         else:
             print(f"{enemy.name.capitalize()} is too tired to act!")
 #       End Enemy Turn
         player_turn = True
+
+    
 
 while enemies != [] and not player.is_dead():
     combat()
@@ -267,3 +270,19 @@ if player.is_dead():
 ### /Game Loop 
 
 input() # end of file pause
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Old Enemy Logic. Saving it here in case I screw up
+
+##       
