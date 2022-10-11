@@ -33,6 +33,8 @@ class Entity:
         self.block_amt : int = args["block_amt"]
         self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
+
+        self.raw : dict = args
         
 
 #   Sets `health` to 0 if its below 0

@@ -254,6 +254,22 @@ def new_character():
     if not os.path.exists(character_path):
         os.mkdir(character_path)
 
+    print()
+    name = input("Enter a name for your new character: ")
+    new_character = Entity({
+        "name": name,
+        "health": 30,
+        "stamina": 10,
+        "strength": 10,
+        "poison": 0,
+        "skill": 5,
+        "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
+        "weapon_effect": None,
+        "max_stamina": 10,
+        "block_amt": 3,
+        "Weapon": no_weapon
+    })
+
 def fetch_character(name):
     return character
 ### /Character Creation
@@ -440,6 +456,33 @@ def combat():
         player_turn = True
 
     
+### encryption test
+new_character = Entity({
+    "name": "name",
+    "health": 30,
+    "stamina": 10,
+    "strength": 10,
+    "poison": 0,
+    "skill": 5,
+    "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
+    "weapon_effect": None,
+    "max_stamina": 10,
+    "block_amt": 3,
+    "Weapon": no_weapon
+})
+for key in new_character.raw:
+    print(key)
+    print(new_character.raw[key], "\n")
+print("encrypted data:\n")
+for key in new_character.raw:
+    print(encrypt(key))
+    print(encrypt(str(new_character.raw[key])), "\n")
+print("decrypted data:\n")
+for key in new_character.raw:
+    print(decrypt(encrypt(key)))
+    print(decrypt(encrypt(str(new_character.raw[key]))), "\n")
+input()
+### /encryption test
 
 while enemies != [] and not player.is_dead()  and enemy_encounter_grp != 0:
     combat()
