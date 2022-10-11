@@ -325,18 +325,6 @@ if player.is_dead():
 
 input() # end of file pause
 
-#pycharm test :D
-
-
-
-
-
-
-
-
-
-
-
 #Old Enemy Logic. Saving it here in case I screw up
 
 ##       
