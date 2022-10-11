@@ -15,7 +15,7 @@ import turtle
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
-from Item import Item, ItemTypes
+from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
 
@@ -32,6 +32,22 @@ global npcs
 enemies = []
 npcs = []
 
+#Weapons
+goose_beak = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": StatusEffect.BLEED
+
+})
+toad_hand = ItemWeapon({
+    "damage_boost": 1,
+    "status_effect": StatusEffect.WEAK
+
+})
+no_weapon = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None
+
+    })
 crab = Entity({
     "name": "crab",
     "health": 20, 
@@ -42,7 +58,8 @@ crab = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     "weapon_effect": None,
     "max_stamina": 10,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": no_weapon
     
     
 })
@@ -57,7 +74,8 @@ goose = Entity({
     "actions": [EntityActions.STRIKE.value],
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 5,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": goose_beak
     
 })
 turtle = Entity({
@@ -70,7 +88,8 @@ turtle = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     "weapon_effect": None,
     "max_stamina": 20,
-    "block_amt": 5
+    "block_amt": 5,
+    "Weapon": no_weapon
     
 })
 toad = Entity({
@@ -83,7 +102,8 @@ toad = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
     "weapon_effect": StatusEffect.WEAK,
     "max_stamina": 30,
-    "block_amt": 3
+    "block_amt": 3,
+    "Weapon": no_weapon
     
 })
 enemies.append(crab)
@@ -100,7 +120,8 @@ fred = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
     "weapon_effect": None,
     "max_stamina": 9001,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": no_weapon
     
 })
 
@@ -116,7 +137,8 @@ player = Entity({
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
     "weapon_effect": None,
     "max_stamina": 10,
-    "block_amt": 3
+    "block_amt": 3,
+    "Weapon": no_weapon
      
 })
 ### /Global Variables 
@@ -151,7 +173,7 @@ def display_entity_combat_info(entities):
         print(f"| Stamina: {str(entity.stamina)}")
         time.sleep(0.01)
         print(f"| Block: {str(entity.block)}")
-        statuses = ["Poison","Bleed","Weak","Rage"] #We LOVE bandaid solutions ~Kit
+        
         for s in StatusEffect:
             if entity.status[s] > 0:
                 print(f"| {str(s.name)}: {str(entity.status[s])}")
@@ -171,6 +193,8 @@ def combat():
         current_enemy = random.randrange(len(enemies))
         print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
         time.sleep(0.1)
+        for s in StatusEffect:
+            player.status[s] = 0
        
 
     #enemy : Entity = npcs[0]
@@ -274,16 +298,16 @@ def combat():
             
             match enem_action:
                 case EntityActions.STRIKE.value:
-                    dmg = (enemy.strength + enemy.status[StatusEffect.RAGE]) - player.block
+                    dmg = (enemy.strength + enemy.status[StatusEffect.RAGE] + enemy.weapon.damage_boost) - player.block
                     if dmg < 0:
                         dmg = 0
                     player.apply_damage(dmg) 
                       
                     print(f"{enemy.name.capitalize()} hit you for {dmg} damage. You now have {player.health} health left")
-                    if enemy.weapon_effect != None:
-                        player.apply_status(enemy.weapon_effect, enemy.skill)
-                        print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon_effect.name} to you!")
-                        #I will try and find a way so enemy attacks can have more than one extra effect, will probably do something with a for loop and such ~Kit
+                    if enemy.weapon != no_weapon:
+                        player.apply_status(enemy.weapon.effect, enemy.skill)
+                        print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon.effect.name} to you!")
+                        
                     enemy.stamina -= 3
                         
                    
