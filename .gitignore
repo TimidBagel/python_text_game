@@ -3,3 +3,8 @@ python_text_game_files/__pycache__/
 python_text_game_files/.vscode/
 python_text_game_files/python_text_game.sln
 python_text_game/python_text_game
+python_text_game_files/__pycache__/InputValidator.cpython-310.pyc
+python_text_game_files/__pycache__/Entity.cpython-310.pyc
+python_text_game_files/__pycache__/InputValidator.cpython-310.pyc
+python_text_game_files/__pycache__/Item.cpython-310.pyc
+python_text_game_files/__pycache__/StatusEffect.cpython-310.pyc
