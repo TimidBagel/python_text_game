@@ -3,7 +3,8 @@
 
 from enum import Enum
 from tokenize import String
-
+    
+from StatusEffect import StatusEffect
 class Item:
     def __init__(self) -> None:
         name : String
@@ -11,10 +12,10 @@ class Item:
 
 
 class ItemWeapon(Item):
-    def __init__(self) -> None:
-        damage : int
-        effect = EffectTypes
-        target = EffectTarget
+    def __init__(self, args) -> None:
+        self.damage_boost : int = args["damage_boost"]
+        self.effect : StatusEffect = args["status_effect"]
+        
 
 class ItemAccessory(Item):
     def __init__(self) -> None:

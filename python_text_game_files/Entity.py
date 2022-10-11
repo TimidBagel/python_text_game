@@ -3,6 +3,7 @@
 
 from array import array
 from enum import Enum
+from Item import ItemWeapon
 from Item import ItemTypes
 from StatusEffect import StatusEffect
 import random
@@ -20,6 +21,9 @@ class Entity:
             ItemTypes.ACCESSORY: [],
             ItemTypes.CONSUMABLE: []
         }
+       
+        self.weapon : ItemWeapon = args["Weapon"]#For the equipped weapon (We can bundle this into a dict later) ~Kit
+        
         self.status : dict = {}
         for s in StatusEffect:
             self.status[s] = 0

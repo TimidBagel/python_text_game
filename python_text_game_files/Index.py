@@ -1,5 +1,5 @@
 # Index.py
-# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Ben, Patrick
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Ben
 # A Small Text Based Adventure Game
 
 ### NOTES ###
@@ -8,30 +8,30 @@
 # - ALWAYS use snake_case when referring to variables and functions
 # - ALWAYS Use PascalCase for Objects and Classes
 ## /NOTES ###
-#hi
+#hibhihiihihihihih
 import random
 import time
 import turtle
+import os
+import pathlib
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
-from Item import Item, ItemTypes
+from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
 
 
 ### Global Variables
+global parent_directory
+global character_directory
+global user_directory
+global user_path
+global character_path
+
 global current_enemy
 current_enemy : int = -1
 
-global enemy_encounter_grp
-enemy_encounter_grp : int = 1
-
-global enc_counter
-enc_counter = random.randint(1, 3)
-
-global npc_encounters
-npc_encounters : int = 1
 global player_turn # This is used to keep track if the last turn was the players or not
 player_turn = True
 
@@ -40,6 +40,22 @@ global npcs
 enemies = []
 npcs = []
 
+#Weapons
+goose_beak = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": StatusEffect.BLEED
+
+})
+toad_hand = ItemWeapon({
+    "damage_boost": 1,
+    "status_effect": StatusEffect.WEAK
+
+})
+no_weapon = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None
+
+    })
 crab = Entity({
     "name": "crab",
     "health": 20, 
@@ -50,7 +66,8 @@ crab = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     "weapon_effect": None,
     "max_stamina": 10,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": no_weapon
     
     
 })
@@ -65,7 +82,8 @@ goose = Entity({
     "actions": [EntityActions.STRIKE.value],
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 5,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": goose_beak
     
 })
 turtle = Entity({
@@ -78,13 +96,28 @@ turtle = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     "weapon_effect": None,
     "max_stamina": 20,
-    "block_amt": 5
+    "block_amt": 5,
+    "Weapon": no_weapon
+    
+})
+toad = Entity({
+    "name": "toad",
+    "health": 35, 
+    "stamina": 30, 
+    "strength": 2,
+    "poison": 0,
+    "skill": 4,
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
+    "weapon_effect": StatusEffect.WEAK,
+    "max_stamina": 30,
+    "block_amt": 3,
+    "Weapon": no_weapon
     
 })
 enemies.append(crab)
 enemies.append(goose)
-enemies.append(turtle)
-
+#enemies.append(turtle)
+enemies.append(toad)
 fred = Entity({
     "name": "fred",
     "health": 9001,
@@ -95,35 +128,25 @@ fred = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
     "weapon_effect": None,
     "max_stamina": 9001,
-    "block_amt": 0
+    "block_amt": 0,
+    "Weapon": no_weapon
     
 })
-martyr = Entity({
-    "name": "martyr",
-    "health": 90,
-    "stamina": 20,
-    "strength": 3,
-    "poison": 4,
-    "skill": 10,
-    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
-    "weapon_effect": StatusEffect.BLEED,
-    "max_stamina": 20,
-    "block_amt": 2
-})
+
 npcs.append(fred)
-npcs.append(martyr)
 
 player = Entity({
     "name": "player",
-    "health": 2000, 
-    "stamina": 100000, 
-    "strength": 2000000,
+    "health": 30, 
+    "stamina": 10, 
+    "strength": 10,
     "poison": 0,
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
     "weapon_effect": None,
     "max_stamina": 10,
-    "block_amt": 3
+    "block_amt": 3,
+    "Weapon": no_weapon
      
 })
 ### /Global Variables 
@@ -133,7 +156,12 @@ player = Entity({
 
 ### /Input Validation 
 
-
+def init():
+    parent_directory = pathlib.Path(__file__).parent.resolve()
+    character_directory = "characters/"
+    user_directory = "userdata/"
+    user_path = os.path.join(parent_directory, user_directory)
+    character_path = os.path.join(user_path, character_directory)
 
 ### Inventory 
 
@@ -142,34 +170,45 @@ player = Entity({
 
 
 ### Action Loop 
-def progression(): #progression loop wip -p
-    global enemy_encounter_grp
-    global npc_encounters
-    global npcs
-    global current_npc
-    if enemy_encounter_grp == 0:
-        input()
-        global enc_counter
-        enc_counter = random.randint(1, 3)
-        print(f"after fighting through the seemingly endless amounts of animals you have come across...")
-        if enc_counter == 1:
-            print("another enemy!")
-            combat()
-        if enc_counter == 2:
-            npc_encounters = npc_encounters
-            if npc_encounters == 1:
-                current_npc = npcs(martyr)
-                print(f"you have come across the {npcs[current_npc].name.capitalize()}")
-                has_chosen = False
-                while has_chosen == False:
-                    m_choice = input(f"""The {npcs[current_npc].name.capitalize()} has given you a deal you can gain more power in exchange for your life force... \n
-                    do you 
-                    1) accept -10 health for +5 damage
-                    2) decline (move on)
-                    3) fight the {npcs(current_npc).name.capitalize()}""")
-        if enc_counter == 3:
-            print("treasure")
+
 ### /Action Loop 
+
+### Character Creation
+def encrypt(base):
+    encrypted = ""
+    for x in base:
+        cipher = chr(ord(x) + 10)
+        if ord(x) >= 97 and ord(x) <= 122:
+            if ord(x) > 112:
+                cipher = chr(ord(x) - 16)
+        elif ord(x) >= 65 and ord(x) <= 90:
+            if ord(x) > 80:
+                cipher = chr(ord(x) - 16)
+        encrypted += cipher
+    return encrypted
+
+def decrypt(base):
+    decrypted = ""
+    for x in base:
+        no_cipher = chr(ord(x) - 10)
+        if ord(x) >= 97 and ord(x) <= 122:
+            if ord(x) < 107:
+                no_cipher = chr(ord(x) + 16)
+        elif ord(x) >= 65 and ord(x) <= 90:
+            if ord(x) < 75:
+                no_cipher = chr(ord(x) + 16)
+        decrypted += no_cipher
+    return decrypted
+
+def new_character():
+    if not os.path.exists(user_path):
+        os.mkdir(user_path)
+    if not os.path.exists(character_path):
+        os.mkdir(character_path)
+
+def fetch_character(name):
+    return character
+### /Character Creation
 
 
 ### Game Loop 
@@ -181,7 +220,16 @@ def display_entity_combat_info(entities):
         time.sleep(0.01)
         print(f"| Health: {str(entity.health)}")
         time.sleep(0.01)
-        print(f"| Stamina: {str(entity.stamina)}\n")
+        print(f"| Stamina: {str(entity.stamina)}")
+        time.sleep(0.01)
+        print(f"| Block: {str(entity.block)}")
+        
+        for s in StatusEffect:
+            if entity.status[s] > 0:
+                print(f"| {str(s.name)}: {str(entity.status[s])}")
+        print("\n")
+            
+        
 
 def combat():
     input() # press "enter" to continue turns
@@ -195,10 +243,12 @@ def combat():
         current_enemy = random.randrange(len(enemies))
         print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
         time.sleep(0.1)
+        for s in StatusEffect:
+            player.status[s] = 0
        
 
-    #enemy : Entity = npcs[0]
-    enemy : Entity = enemies[current_enemy]
+    enemy : Entity = npcs[0]
+    #enemy : Entity = enemies[current_enemy]
     
     global player_turn
     if player_turn: # IF its the players turn
@@ -210,6 +260,11 @@ def combat():
             player.call_status(StatusEffect.POISON, 1)
             print(f"\nYou took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
             player.status[StatusEffect.POISON] -= 1
+            time.sleep(0.01)
+        if player.status[StatusEffect.WEAK] > 0:
+            player.status[StatusEffect.WEAK] -= 1
+          
+            
             time.sleep(0.01)
         #Bleed Check
        
@@ -238,7 +293,7 @@ def combat():
         match action:
             case EntityActions.STRIKE.value:
                 if player.stamina > 2:
-                    dmg = player.strength - enemy.block
+                    dmg = (player.strength - player.status[StatusEffect.WEAK]) - enemy.block
                     if dmg < 1:
                         dmg = 0
                     enemy.apply_damage(dmg) 
@@ -261,10 +316,8 @@ def combat():
                 if enemy.is_dead():
                     print(f"\n{enemy.name.capitalize()} has fallen in battle")
                     enemies.remove(enemy)
-                    current_enemy -= 1
-                    global enemy_encounter_grp
-                    enemy_encounter_grp -= 1
-
+                    current_enemy = -1
+                    
                     for s in StatusEffect:
                         player.status[s] = 0
                     player.stamina = 10
@@ -284,6 +337,8 @@ def combat():
         
     else: # IF its the enemies turn
         print("|| Enemy Turn")
+        if enemy.status[StatusEffect.RAGE]:
+            enemy.status[StatusEffect.RAGE] -= 1
         enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
@@ -293,16 +348,16 @@ def combat():
             
             match enem_action:
                 case EntityActions.STRIKE.value:
-                    dmg = enemy.strength - player.block
-                    if dmg < 1:
+                    dmg = (enemy.strength + enemy.status[StatusEffect.RAGE] + enemy.weapon.damage_boost) - player.block
+                    if dmg < 0:
                         dmg = 0
                     player.apply_damage(dmg) 
                       
                     print(f"{enemy.name.capitalize()} hit you for {dmg} damage. You now have {player.health} health left")
-                    if enemy.weapon_effect != None:
-                        player.apply_status(enemy.weapon_effect, enemy.skill)
-                        print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon_effect.name} to you!")
-                        #I will try and find a way so enemy attacks can have more than one extra effect, will probably do something with a for loop and such ~Kit
+                    if enemy.weapon != no_weapon:
+                        player.apply_status(enemy.weapon.effect, enemy.skill)
+                        print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon.effect.name} to you!")
+                        
                     enemy.stamina -= 3
                         
                    
@@ -322,7 +377,10 @@ def combat():
                 case EntityActions.BLOCK.value:
                     enemy.block += enemy.block_amt
                     print(f"{enemy.name.capitalize()} added {enemy.block_amt} block to self!")
-                
+                case EntityActions.ADD_RAGE.value:
+                    enemy.apply_status(StatusEffect.RAGE, enemy.skill)
+                    print(f"{enemy.name.capitalize()} is getting pumped and added {enemy.skill} rage to itself!!")
+                    enemy.stamina -= 3
             if enemy.stamina < 0:
                 enemy.stamina = 0
             
@@ -333,10 +391,8 @@ def combat():
 
     
 
-while enemies != [] and not player.is_dead() and enemy_encounter_grp != 0:
+while enemies != [] and not player.is_dead():
     combat()
-if enemy_encounter_grp == 0:
-    progression()
 if player.is_dead():
     print("You have died!")
 ### /Game Loop 
