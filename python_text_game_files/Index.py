@@ -125,7 +125,7 @@ toad = Entity({
 })
 enemies.append(crab)
 enemies.append(goose)
-enemies.append(turtle)
+#enemies.append(turtle)
 enemies.append(toad)
 fred = Entity({
     "name": "fred",
@@ -141,8 +141,8 @@ fred = Entity({
     "Weapon": no_weapon
     
 })
-martyr = Entity({ #martyr npc 
-    "name": "martyr",
+draughlix = Entity({ #martyr npc 
+    "name": "draughlix",
     "health": 90,
     "stamina": 20,
     "strength": 3,
@@ -155,7 +155,7 @@ martyr = Entity({ #martyr npc
     "Weapon": no_weapon
 })
 npcs.append(fred)
-npcs.append(martyr)
+npcs.append(draughlix)
 
 player = Entity({
     "name": "player",
@@ -200,24 +200,44 @@ def progression(): #progression loop wip -p
     if enemy_encounter_grp == 0:
         input()
         global enc_counter
-        enc_counter = random.randint(1, 3)
+        enc_counter = random.randint(1, 2)
         print(f"after fighting through the seemingly endless amounts of animals you have come across...")
         if enc_counter == 1:
             print("another enemy!")
             enemy_encounter_grp = 1
             combat()
         if enc_counter == 2:
-            npc_encounters = npc_encounters
-            if npc_encounters == 1:
-                current_npc = npcs[martyr]
-                print(f"you have come across the {current_npc.name.capitalize()}") # martyr is still buggy - pat
+            npc_encounters = random.randint(1, len(npcs))
+            if npc_encounters == 0:
+                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly")
+            if npc_encounters == 1: #We can change to a match/case later
+                current_npc = npcs[1]
+                print(f"you have come across the {current_npc.name.capitalize()}") 
                 has_chosen = False
+                valid_m_actions = ['1','2']
                 while has_chosen == False:
-                    m_choice = input(f"""The martyr has given you a deal you can gain more power in exchange for your life force... \n
+                    m_choice = input(f"""The draughlix has offered you a deal you can gain more power in exchange for your life force... \n
                     do you 
                     1) accept - 10 health for +5 damage
-                    2) decline (move on)
-                    3) fight the martyr""")
+                    2) decline (move on)\n""")
+                    #3) fight the draughlix\n""")
+                    if m_choice in valid_m_actions:
+                        has_chosen = True
+                    else:
+                        has_chosen = False
+                if m_choice == '1':
+                    player.apply_damage(10)
+                    if player.health < 1:
+                        print("You idiot why would you sacrifice health you didn't have? Now you will die.")
+                    else:
+                        print("The dark pact is sealed. Your strength increased by 5")
+                        player.strength += 5
+                    progression()
+                elif m_choice == '2':
+                    print("You decide to leave the draughlix, and continue your journey")
+                    progression()
+              
+                    
         if enc_counter == 3:
             print("treasure")
 ### /Action Loop 
@@ -280,25 +300,30 @@ def display_entity_combat_info(entities):
             
         
 
-def combat():
+def combat(target_enemy = None):
     input() # press "enter" to continue turns
     time.sleep(0.1)
 #   Set enemy if unnassigned
+    if target_enemy == None:
+        if enemies == []: return
 
-    if enemies == []: return
+        global current_enemy
+        if current_enemy == -1:
+            current_enemy = random.randrange(len(enemies))
+            print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
+            time.sleep(0.1)
+            for s in StatusEffect:
+                player.status[s] = 0
+            
+            
+           
 
-    global current_enemy
-    if current_enemy == -1:
-        current_enemy = random.randrange(len(enemies))
-        print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
-        time.sleep(0.1)
+        #enemy : Entity = npcs[0]
+        enemy : Entity = enemies[current_enemy]
+    else:
+        enemy = target_enemy
+        current_enemy = -2 #-2 will be a custom enemy
         
-        for s in StatusEffect:
-            player.status[s] = 0
-       
-
-    #enemy : Entity = npcs[0]
-    enemy : Entity = enemies[current_enemy]
     
     
     global player_turn
@@ -441,11 +466,15 @@ def combat():
             print(f"{enemy.name.capitalize()} is too tired to act!")
 #       End Enemy Turn
         player_turn = True
+        
 
     
 
 while enemies != [] and not player.is_dead()  and enemy_encounter_grp != 0:
+    
+    
     combat()
+    
     if enemy_encounter_grp == 0:
         progression()
 if player.is_dead():
@@ -455,17 +484,3 @@ if player.is_dead():
 input() # end of file pause
 
 
-
-
-
-
-
-
-
-
-
-
-
-#Old Enemy Logic. Saving it here in case I screw up
-
-##       
