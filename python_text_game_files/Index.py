@@ -108,7 +108,7 @@ martyr = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 20,
-    "block_amt": 1,
+    "block_amt": 2
 })
 npcs.append(fred)
 npcs.append(martyr)
@@ -159,14 +159,14 @@ def progression(): #progression loop wip -p
             npc_encounters = npc_encounters
             if npc_encounters == 1:
                 current_npc = npcs(martyr)
-                print(f"you have come across the {current_npc.name.capitalize()}")
+                print(f"you have come across the {npcs[current_npc].name.capitalize()}")
                 has_chosen = False
                 while has_chosen == False:
-                    m_choice = input(f"""The {current_npc.name.capitalize()} has given you a deal you can gain more power in exchange for your life force... \n
+                    m_choice = input(f"""The {npcs[current_npc].name.capitalize()} has given you a deal you can gain more power in exchange for your life force... \n
                     do you 
-                    1) accept - 10 health for +5 damage
+                    1) accept -10 health for +5 damage
                     2) decline (move on)
-                    3) fight the martyr""")
+                    3) fight the {npcs(current_npc).name.capitalize()}""")
         if enc_counter == 3:
             print("treasure")
 ### /Action Loop 
