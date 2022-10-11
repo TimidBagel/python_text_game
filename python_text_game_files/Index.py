@@ -1,5 +1,5 @@
 # Index.py
-# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Ben
+# Authors: Iain, Jun, Robert, Cormac, Andrew, Drew, Ben, Patrick
 # A Small Text Based Adventure Game
 
 ### NOTES ###
@@ -31,6 +31,15 @@ global character_path
 
 global current_enemy
 current_enemy : int = -1
+
+global enemy_encounter_grp
+enemy_encounter_grp : int = 1
+
+global enc_counter
+enc_counter = random.randint(1, 3)
+
+global npc_encounters
+npc_encounters : int = 1
 
 global player_turn # This is used to keep track if the last turn was the players or not
 player_turn = True
@@ -132,8 +141,21 @@ fred = Entity({
     "Weapon": no_weapon
     
 })
-
+martyr = Entity({ #martyr npc 
+    "name": "martyr",
+    "health": 90,
+    "stamina": 20,
+    "strength": 3,
+    "poison": 4,
+    "skill": 10,
+    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
+    "weapon_effect": StatusEffect.BLEED,
+    "max_stamina": 20,
+    "block_amt": 1,
+    "Weapon": no_weapon
+})
 npcs.append(fred)
+npcs.append(martyr)
 
 player = Entity({
     "name": "player",
@@ -170,7 +192,33 @@ def init():
 
 
 ### Action Loop 
-
+def progression(): #progression loop wip -p
+    global enemy_encounter_grp
+    global npc_encounters
+    global npcs
+    global current_npc
+    if enemy_encounter_grp == 0:
+        input()
+        global enc_counter
+        enc_counter = random.randint(1, 3)
+        print(f"after fighting through the seemingly endless amounts of animals you have come across...")
+        if enc_counter == 1:
+            print("another enemy!")
+            combat()
+        if enc_counter == 2:
+            npc_encounters = npc_encounters
+            if npc_encounters == 1:
+                current_npc = npcs(martyr)
+                print(f"you have come across the {current_npc.name.capitalize()}") # martyr is still buggy - pat
+                has_chosen = False
+                while has_chosen == False:
+                    m_choice = input(f"""The martyr has given you a deal you can gain more power in exchange for your life force... \n
+                    do you 
+                    1) accept - 10 health for +5 damage
+                    2) decline (move on)
+                    3) fight the martyr""")
+        if enc_counter == 3:
+            print("treasure")
 ### /Action Loop 
 
 ### Character Creation
@@ -317,7 +365,9 @@ def combat():
                     print(f"\n{enemy.name.capitalize()} has fallen in battle")
                     enemies.remove(enemy)
                     current_enemy = -1
-                    
+                    global enemy_encounter_grp
+                    enemy_encounter_grp -= 1
+
                     for s in StatusEffect:
                         player.status[s] = 0
                     player.stamina = 10
@@ -391,8 +441,10 @@ def combat():
 
     
 
-while enemies != [] and not player.is_dead():
+while enemies != [] and not player.is_dead()  and enemy_encounter_grp != 0:
     combat()
+    if enemy_encounter_grp == 0:
+        progression()
 if player.is_dead():
     print("You have died!")
 ### /Game Loop 
