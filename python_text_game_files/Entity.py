@@ -26,6 +26,8 @@ class Entity:
 
         self.actions : array = args["actions"]
         self.weapon_effect : StatusEffect = args["weapon_effect"]
+        self.block_amt : int = args["block_amt"]
+        self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
         
 
@@ -34,7 +36,7 @@ class Entity:
         self.health = int((self.health - amt) > 0) * abs(self.health - amt)
 
     def apply_status(self, status: StatusEffect, amt: int) -> None:
-        self.status[status] = amt
+            self.status[status] += amt
         
 
     def call_status(self, status: StatusEffect, amt: int):
@@ -46,12 +48,16 @@ class Entity:
 
     def is_dead(self) -> bool:
         return self.health <= 0
+       #WE will eventually add a get_modifer def that can get all the modifiers for an attack.
 class EntityActions(Enum): #We need some way to remove actions for enemies form the player action list (And i dont think ben would be happy if I made a new Enum) ~Kit
     STRIKE = 0
     BLOCK = 1
     ESCAPE = 2
     ADD_POISON = 3
     HEAL = 4
+    ADD_WEAK = 5
+    ADD_RAGE = 6
+    #On second thought, is it possible to have an enum with a parameter? we could have ADDSTATUS(), and that could work for multiple maybe.
 
 #       End Enemy Turn
        
