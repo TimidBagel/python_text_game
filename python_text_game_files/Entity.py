@@ -36,7 +36,7 @@ class Entity:
         self.health = int((self.health - amt) > 0) * abs(self.health - amt)
 
     def apply_status(self, status: StatusEffect, amt: int) -> None:
-            self.status[status] = amt
+            self.status[status] += amt
         
 
     def call_status(self, status: StatusEffect, amt: int):

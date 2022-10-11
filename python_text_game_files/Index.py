@@ -88,7 +88,7 @@ toad = Entity({
 })
 enemies.append(crab)
 enemies.append(goose)
-enemies.append(turtle)
+#enemies.append(turtle)
 enemies.append(toad)
 fred = Entity({
     "name": "fred",
@@ -187,7 +187,7 @@ def combat():
             print(f"\nYou took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
             player.status[StatusEffect.POISON] -= 1
             time.sleep(0.01)
-        if bool(player.status[StatusEffect.WEAK] > 0):
+        if player.status[StatusEffect.WEAK] > 0:
             player.status[StatusEffect.WEAK] -= 1
           
             
@@ -263,7 +263,8 @@ def combat():
         
     else: # IF its the enemies turn
         print("|| Enemy Turn")
-        enemy.status[StatusEffect.RAGE] -= 1
+        if enemy.status[StatusEffect.RAGE]:
+            enemy.status[StatusEffect.RAGE] -= 1
         enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
@@ -274,7 +275,7 @@ def combat():
             match enem_action:
                 case EntityActions.STRIKE.value:
                     dmg = (enemy.strength + enemy.status[StatusEffect.RAGE]) - player.block
-                    if dmg < 1:
+                    if dmg < 0:
                         dmg = 0
                     player.apply_damage(dmg) 
                       
