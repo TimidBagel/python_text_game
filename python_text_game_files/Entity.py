@@ -55,6 +55,9 @@ class EntityActions(Enum): #We need some way to remove actions for enemies form 
     ESCAPE = 2
     ADD_POISON = 3
     HEAL = 4
+    ADD_WEAK = 5
+    ADD_RAGE = 6
+    #On second thought, is it possible to have an enum with a parameter? we could have ADDSTATUS(), and that could work for multiple maybe.
 
 #       End Enemy Turn
        

@@ -73,10 +73,23 @@ turtle = Entity({
     "block_amt": 5
     
 })
+toad = Entity({
+    "name": "toad",
+    "health": 35, 
+    "stamina": 30, 
+    "strength": 2,
+    "poison": 0,
+    "skill": 4,
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
+    "weapon_effect": StatusEffect.WEAK,
+    "max_stamina": 30,
+    "block_amt": 3
+    
+})
 enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
-
+enemies.append(toad)
 fred = Entity({
     "name": "fred",
     "health": 9001,
@@ -90,6 +103,7 @@ fred = Entity({
     "block_amt": 0
     
 })
+
 npcs.append(fred)
 
 player = Entity({
@@ -134,7 +148,16 @@ def display_entity_combat_info(entities):
         time.sleep(0.01)
         print(f"| Health: {str(entity.health)}")
         time.sleep(0.01)
-        print(f"| Stamina: {str(entity.stamina)}\n")
+        print(f"| Stamina: {str(entity.stamina)}")
+        time.sleep(0.01)
+        print(f"| Block: {str(entity.block)}")
+        statuses = ["Poison","Bleed","Weak","Rage"] #We LOVE bandaid solutions ~Kit
+        for s in StatusEffect:
+            if entity.status[s] > 0:
+                print(f"| {str(s.name)}: {str(entity.status[s])}")
+        print("\n")
+            
+        
 
 def combat():
     input() # press "enter" to continue turns
@@ -164,6 +187,11 @@ def combat():
             print(f"\nYou took 1 damage from poison. You now have {player.health} health remaining and {player.status[StatusEffect.POISON]} turns of poison remaining")
             player.status[StatusEffect.POISON] -= 1
             time.sleep(0.01)
+        if bool(player.status[StatusEffect.WEAK] > 0):
+            player.status[StatusEffect.WEAK] -= 1
+          
+            
+            time.sleep(0.01)
         #Bleed Check
        
 
@@ -191,7 +219,7 @@ def combat():
         match action:
             case EntityActions.STRIKE.value:
                 if player.stamina > 2:
-                    dmg = player.strength - enemy.block
+                    dmg = (player.strength - player.status[StatusEffect.WEAK]) - enemy.block
                     if dmg < 1:
                         dmg = 0
                     enemy.apply_damage(dmg) 
@@ -235,6 +263,7 @@ def combat():
         
     else: # IF its the enemies turn
         print("|| Enemy Turn")
+        enemy.status[StatusEffect.RAGE] -= 1
         enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
@@ -244,7 +273,7 @@ def combat():
             
             match enem_action:
                 case EntityActions.STRIKE.value:
-                    dmg = enemy.strength - player.block
+                    dmg = (enemy.strength + enemy.status[StatusEffect.RAGE]) - player.block
                     if dmg < 1:
                         dmg = 0
                     player.apply_damage(dmg) 
@@ -273,7 +302,10 @@ def combat():
                 case EntityActions.BLOCK.value:
                     enemy.block += enemy.block_amt
                     print(f"{enemy.name.capitalize()} added {enemy.block_amt} block to self!")
-                
+                case EntityActions.ADD_RAGE.value:
+                    enemy.apply_status(StatusEffect.RAGE, enemy.skill)
+                    print(f"{enemy.name.capitalize()} is getting pumped and added {enemy.skill} rage to itself!!")
+                    enemy.stamina -= 3
             if enemy.stamina < 0:
                 enemy.stamina = 0
             
