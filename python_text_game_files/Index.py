@@ -23,11 +23,11 @@ from StatusEffect import StatusEffect
 
 
 ### Global Variables
-global parent_directory = pathlib.Path(__file__).parent.resolve()
-global character_directory = "characters/"
-global user_directory = "userdata/"
-global user_path = os.path.join(parent_directory, user_directory)
-global character_path = os.path.join(user_path, character_directory)
+global parent_directory
+global character_directory
+global user_directory
+global user_path
+global character_path
 
 global current_enemy
 current_enemy : int = -1
@@ -158,6 +158,10 @@ player = Entity({
 
 def init():
     parent_directory = pathlib.Path(__file__).parent.resolve()
+    character_directory = "characters/"
+    user_directory = "userdata/"
+    user_path = os.path.join(parent_directory, user_directory)
+    character_path = os.path.join(user_path, character_directory)
 
 ### Inventory 
 
