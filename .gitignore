@@ -8,3 +8,7 @@ python_text_game_files/__pycache__/Entity.cpython-310.pyc
 python_text_game_files/__pycache__/InputValidator.cpython-310.pyc
 python_text_game_files/__pycache__/Item.cpython-310.pyc
 python_text_game_files/__pycache__/StatusEffect.cpython-310.pyc
+python_text_game_files/__pycache__/Entity.cpython-310.pyc
+python_text_game_files/__pycache__/Entity.cpython-310.pyc
+python_text_game_files/__pycache__/Item.cpython-310.pyc
+*.pyc
