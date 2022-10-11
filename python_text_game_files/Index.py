@@ -12,6 +12,8 @@
 import random
 import time
 import turtle
+import os
+import pathlib
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
@@ -21,6 +23,12 @@ from StatusEffect import StatusEffect
 
 
 ### Global Variables
+global parent_directory = pathlib.Path(__file__).parent.resolve()
+global character_directory = "characters/"
+global user_directory = "userdata/"
+global user_path = os.path.join(parent_directory, user_directory)
+global character_path = os.path.join(user_path, character_directory)
+
 global current_enemy
 current_enemy : int = -1
 
@@ -148,7 +156,8 @@ player = Entity({
 
 ### /Input Validation 
 
-
+def init():
+    parent_directory = pathlib.Path(__file__).parent.resolve()
 
 ### Inventory 
 
@@ -159,6 +168,43 @@ player = Entity({
 ### Action Loop 
 
 ### /Action Loop 
+
+### Character Creation
+def encrypt(base):
+    encrypted = ""
+    for x in base:
+        cipher = chr(ord(x) + 10)
+        if ord(x) >= 97 and ord(x) <= 122:
+            if ord(x) > 112:
+                cipher = chr(ord(x) - 16)
+        elif ord(x) >= 65 and ord(x) <= 90:
+            if ord(x) > 80:
+                cipher = chr(ord(x) - 16)
+        encrypted += cipher
+    return encrypted
+
+def decrypt(base):
+    decrypted = ""
+    for x in base:
+        no_cipher = chr(ord(x) - 10)
+        if ord(x) >= 97 and ord(x) <= 122:
+            if ord(x) < 107:
+                no_cipher = chr(ord(x) + 16)
+        elif ord(x) >= 65 and ord(x) <= 90:
+            if ord(x) < 75:
+                no_cipher = chr(ord(x) + 16)
+        decrypted += no_cipher
+    return decrypted
+
+def new_character():
+    if not os.path.exists(user_path):
+        os.mkdir(user_path)
+    if not os.path.exists(character_path):
+        os.mkdir(character_path)
+
+def fetch_character(name):
+    return character
+### /Character Creation
 
 
 ### Game Loop 
@@ -197,8 +243,8 @@ def combat():
             player.status[s] = 0
        
 
-    #enemy : Entity = npcs[0]
-    enemy : Entity = enemies[current_enemy]
+    enemy : Entity = npcs[0]
+    #enemy : Entity = enemies[current_enemy]
     
     global player_turn
     if player_turn: # IF its the players turn
