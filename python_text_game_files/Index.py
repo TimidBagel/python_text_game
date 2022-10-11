@@ -120,7 +120,7 @@ toad = Entity({
     "weapon_effect": StatusEffect.WEAK,
     "max_stamina": 30,
     "block_amt": 3,
-    "Weapon": no_weapon
+    "Weapon": toad_hand
     
 })
 enemies.append(crab)
