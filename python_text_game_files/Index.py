@@ -8,7 +8,7 @@
 # - ALWAYS use snake_case when referring to variables and functions
 # - ALWAYS Use PascalCase for Objects and Classes
 ## /NOTES ###
-
+#hi
 import random
 import time
 import turtle
