@@ -1,5 +1,5 @@
 # StatusEffect.py
-# Contributors: Ben
+# Contributors: Ben, Cormac
 
 from enum import Enum
 
