@@ -204,11 +204,12 @@ def progression(): #progression loop wip -p
         print(f"after fighting through the seemingly endless amounts of animals you have come across...")
         if enc_counter == 1:
             print("another enemy!")
+            enemy_encounter_grp = 1
             combat()
         if enc_counter == 2:
             npc_encounters = npc_encounters
             if npc_encounters == 1:
-                current_npc = npcs(martyr)
+                current_npc = npcs[martyr]
                 print(f"you have come across the {current_npc.name.capitalize()}") # martyr is still buggy - pat
                 has_chosen = False
                 while has_chosen == False:
@@ -291,12 +292,14 @@ def combat():
         current_enemy = random.randrange(len(enemies))
         print(f"You encountered a {enemies[current_enemy].name.capitalize()}\n")
         time.sleep(0.1)
+        
         for s in StatusEffect:
             player.status[s] = 0
        
 
     #enemy : Entity = npcs[0]
     enemy : Entity = enemies[current_enemy]
+    
     
     global player_turn
     if player_turn: # IF its the players turn
@@ -366,7 +369,7 @@ def combat():
                     enemies.remove(enemy)
                     current_enemy = -1
                     global enemy_encounter_grp
-                    enemy_encounter_grp -= 1
+                    enemy_encounter_grp = 0
 
                     for s in StatusEffect:
                         player.status[s] = 0
