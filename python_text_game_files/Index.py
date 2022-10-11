@@ -116,7 +116,7 @@ toad = Entity({
 })
 enemies.append(crab)
 enemies.append(goose)
-#enemies.append(turtle)
+enemies.append(turtle)
 enemies.append(toad)
 fred = Entity({
     "name": "fred",
@@ -247,8 +247,8 @@ def combat():
             player.status[s] = 0
        
 
-    enemy : Entity = npcs[0]
-    #enemy : Entity = enemies[current_enemy]
+    #enemy : Entity = npcs[0]
+    enemy : Entity = enemies[current_enemy]
     
     global player_turn
     if player_turn: # IF its the players turn
@@ -337,7 +337,7 @@ def combat():
         
     else: # IF its the enemies turn
         print("|| Enemy Turn")
-        if enemy.status[StatusEffect.RAGE]:
+        if enemy.status[StatusEffect.RAGE] > 0:
             enemy.status[StatusEffect.RAGE] -= 1
         enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
