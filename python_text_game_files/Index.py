@@ -61,8 +61,8 @@ toad_hand = ItemWeapon({
 
 })
 blade_of_agony = ItemWeapon({ #draughlix weapon - pat
-    "damage_boost": 5,
-    "status_effect": StatusEffect.BLEED
+    "damage_boost": 4,
+    "status_effect": StatusEffect.LIFESTEAL #i also feel like we should make a new status effect that saps hp from an enemy and heals those who wield the blade -pat
 })
 no_weapon = ItemWeapon({
     "damage_boost": 0,
@@ -159,9 +159,9 @@ draughlix = Entity({
     "stamina": 20,
     "strength": 2,
     "poison": 4,
-    "skill": 10,
+    "skill": 8,
     "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
-    "weapon_effect": StatusEffect.BLEED,
+    "weapon_effect": StatusEffect.LIFESTEAL,
     "max_stamina": 20,
     "block_amt": 1,
     "Weapon": blade_of_agony
@@ -197,7 +197,6 @@ player = Entity({
     "max_stamina": 10,
     "block_amt": 3,
     "Weapon": no_weapon
-     
 })
 ### /Global Variables 
 
@@ -244,7 +243,7 @@ def progression(): #progression loop wip -p
                 print(f"you have come across the {current_npc.name.capitalize()}") 
 ##>>>>>>> main
                 has_chosen = False
-                valid_m_actions = ['1','2']
+                valid_m_actions = ['1','2','3']
                 while has_chosen == False:
                     m_choice = input(f"""The draughlix has offered you a deal you can gain more power in exchange for your life force... \n
                     do you 
@@ -266,7 +265,9 @@ def progression(): #progression loop wip -p
                     progression()
                 elif m_choice == '2':
                     print("You decide to leave the draughlix, and continue your journey")
-                    progression()      
+                    progression()
+                elif m_choice == '3':
+                    print("") #fight is wip - pat      
             if enc_counter == 3:
                 print("treasure") # treasure is a wip sorry -pat
 ### /Action Loop 
@@ -358,7 +359,9 @@ def combat(target_enemy = None):
     global player_turn
     if player_turn: # IF its the players turn
         print("|| Player's Turn")
-        
+#       Health not over max hp check
+        if player.health > player.max_hp:
+            player.health = player.max_hp
 #       Poison check
         
         if bool(player.status[StatusEffect.POISON] > 0):
@@ -368,11 +371,15 @@ def combat(target_enemy = None):
             time.sleep(0.01)
         if player.status[StatusEffect.WEAK] > 0:
             player.status[StatusEffect.WEAK] -= 1
-          
             
             time.sleep(0.01)
         #Bleed Check
        
+
+       #Lifesteal check
+
+        if bool (player.status[StatusEffect.LIFESTEAL] > 0):
+            player.call_status(StatusEffect.LIFESTEAL, 1)
 
         if player.stamina < player.max_stamina:
             player.stamina += 1
@@ -451,7 +458,8 @@ def combat(target_enemy = None):
         enemy.block = 0
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
-      
+        if enemy.health > enemy.max_hp:
+            enemy.health = enemy.max_hp
         enem_action = random.choice((enemy.actions))
         if enemy.stamina > 2: 
             
@@ -478,7 +486,6 @@ def combat(target_enemy = None):
                     player.apply_status(StatusEffect.POISON, enemy.skill)
                     print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
                     enemy.stamina -= 2
-                        
                 case EntityActions.HEAL.value:
                     enemy.apply_damage(-enemy.skill) #Using negative attack damage for healing Big brain ~Kit
                     print(f"{enemy.name.capitalize()} healed for {enemy.skill} damage. It now has {enemy.health} health left")

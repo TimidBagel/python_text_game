@@ -42,13 +42,14 @@ class Entity:
 
     def apply_status(self, status: StatusEffect, amt: int) -> None:
             self.status[status] += amt
-        
 
     def call_status(self, status: StatusEffect, amt: int):
         match status:
             case StatusEffect.POISON:
                 self.apply_damage(amt)
             case StatusEffect.BLEED:
+                self.apply_damage(amt)
+            case StatusEffect.LIFESTEAL:
                 self.apply_damage(amt)
 
     def is_dead(self) -> bool:
@@ -62,6 +63,7 @@ class EntityActions(Enum): #We need some way to remove actions for enemies form 
     HEAL = 4
     ADD_WEAK = 5
     ADD_RAGE = 6
+    LIFESTEAL = 6
     #On second thought, is it possible to have an enum with a parameter? we could have ADDSTATUS(), and that could work for multiple maybe.
 
 #       End Enemy Turn
