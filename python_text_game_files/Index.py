@@ -62,13 +62,15 @@ toad_hand = ItemWeapon({
 })
 blade_of_agony = ItemWeapon({ #draughlix weapon - pat
     "damage_boost": 5,
-    "statys_effect": StatusEffect.BLEED
+    "status_effect": StatusEffect.BLEED
 })
 no_weapon = ItemWeapon({
     "damage_boost": 0,
     "status_effect": None
 
     })
+
+#enemies
 crab = Entity({
     "name": "crab",
     "health": 20, 
@@ -152,8 +154,8 @@ fred = Entity({
 })
 draughlix = Entity({ 
     "name": "draughlix",
-    "health": 90,
-    "max_hp": 90,
+    "health": 80,
+    "max_hp": 80,
     "stamina": 20,
     "strength": 2,
     "poison": 4,
@@ -162,24 +164,25 @@ draughlix = Entity({
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 20,
     "block_amt": 1,
-    "Weapon": blade_of_agony #drops this on death
+    "Weapon": blade_of_agony
 })
-draughlix2 = Entity({ #phase 2 of the draughlix
+draughlix2 = Entity({ #phase 2 of the draughlix might be scrapped later idk - pat
     "name": "draughlix",
     "health": 40,
     "max_hp": 40,
     "stamina": 50,
-    "strength": 2,
+    "strength": 3,
     "poison": 4,
     "skill": 10,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
-    "weapon_effect": StatusEffect.WEAK,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.ADD_RAGE.value],
+    "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 50,
-    "block_amt": 1,
-    "Weapon": blade_of_agony
+    "block_amt": 0,
+    "Weapon": blade_of_agony #drops this on death along with other planned stuff -pat
 })
 npcs.append(fred)
 npcs.append(draughlix)
+npcs.append(draughlix2)
 
 player = Entity({
     "name": "player",
@@ -258,16 +261,14 @@ def progression(): #progression loop wip -p
                     if player.max_hp < 1:
                         print("You idiot why would you sacrifice health you didn't have? Now you will die.")
                     else:
-                        print("The dark pact is sealed. Your strength increased by 5")
+                        print("The dark pact is sealed. Your strength increased by 5.. you continue your journey.")
                         player.strength += 5
                     progression()
                 elif m_choice == '2':
                     print("You decide to leave the draughlix, and continue your journey")
-                    progression()
-              
-                    
-        if enc_counter == 3:
-            print("treasure") # treasure is a wip sorry -pat
+                    progression()      
+            if enc_counter == 3:
+                print("treasure") # treasure is a wip sorry -pat
 ### /Action Loop 
 
 ### Character Creation
