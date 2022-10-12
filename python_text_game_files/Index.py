@@ -103,16 +103,16 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
-    "health": 50,
-    "max_hp": 50,
+    "health": 30,
+    "max_hp": 45,
     "stamina": 20, 
-    "strength": 1,
-    "poison": 0,
+    "strength": 0,
+    "poison": 3,
     "skill": 12,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
+    "actions": [EntityActions.ADD_POISON.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     "weapon_effect": None,
     "max_stamina": 20,
-    "block_amt": 5,
+    "block_amt": 4,
     "Weapon": no_weapon
     
 })
@@ -133,7 +133,7 @@ toad = Entity({
 })
 enemies.append(crab)
 enemies.append(goose)
-#enemies.append(turtle)
+enemies.append(turtle)
 enemies.append(toad)
 fred = Entity({
     "name": "fred",
@@ -148,7 +148,6 @@ fred = Entity({
     "max_stamina": 9001,
     "block_amt": 0,
     "Weapon": no_weapon
-    
 })
 draughlix = Entity({ 
     "name": "draughlix",
@@ -161,7 +160,7 @@ draughlix = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 20,
-    "block_amt": 1,
+    "block_amt": 2,
     "Weapon": blade_of_agony
 })
 draughlix2 = Entity({ #phase 2 of the draughlix might be scrapped later idk - pat
@@ -175,10 +174,10 @@ draughlix2 = Entity({ #phase 2 of the draughlix might be scrapped later idk - pa
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.ADD_RAGE.value],
     "weapon_effect": StatusEffect.BLEED,
     "max_stamina": 50,
-    "block_amt": 0,
+    "block_amt": 4,
     "Weapon": blade_of_agony #drops this on death along with other planned stuff -pat
 })
-npcs.append(fred)
+#npcs.append(fred)
 npcs.append(draughlix)
 npcs.append(draughlix2)
 
@@ -187,7 +186,7 @@ player = Entity({
     "health": 30,
     "max_hp": 30, 
     "stamina": 10, 
-    "strength": 15,
+    "strength": 10,
     "poison": 0,
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
@@ -237,19 +236,19 @@ def progression(): #progression loop wip -p
         if enc_counter == 2:
             npc_encounters = random.randint(1, len(npcs))
             if npc_encounters == 1:
-                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly")
+                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
             if npc_encounters == 2: #We can change to a match/case later
-                current_npc = npcs[1]
+                current_npc = npcs[0]
                 print(f"you have come across the {current_npc.name.capitalize()}") 
 ##>>>>>>> main
                 has_chosen = False
                 valid_m_actions = ['1','2','3']
                 while has_chosen == False:
-                    m_choice = input(f"""The draughlix has offered you a deal you can gain more power in exchange for your life force... \n
+                    m_choice = input(f"""The Draughlix has offered you a deal you can gain more power in exchange for your life force... \n
                     do you 
-                    1) accept - 10 health for +5 damage
+                    1) accept -10 health for +5 damage
                     2) decline (move on)
-                    3) fight the draughlix\n""")
+                    3) fight the Draughlix\n""")
                     if m_choice in valid_m_actions:
                         has_chosen = True
                     else:
@@ -258,22 +257,23 @@ def progression(): #progression loop wip -p
                     player.max_hp -= 10
                     player.health = player.max_hp
                     if player.max_hp < 1:
-                        print("You idiot why would you sacrifice health you didn't have? Now you will die.")
+                        print("Draughlix: You idiot why would you sacrifice health you didn't have? Now you are going to die.")
                     else:
-                        print("The dark pact is sealed. Your strength increased by 5.. you continue your journey.")
+                        print("Draughlix: The dark pact is sealed. Your strength has been increased by 5... continue on mortal.")
                         player.strength += 5
                     progression()
                 elif m_choice == '2':
-                    print("You decide to leave the draughlix, and continue your journey.")
+                    print("You decide to leave the Draughlix, and continue your journey.")
                     enemy_encounter_grp += 1
-                elif m_choice == '3':
+                elif m_choice == '3': # fight is a major wip -pat
                     print(f"\nDraughlix: OH? so you want to challenge me? Have at it then!")
                     global current_enemy
                     current_enemy = current_npc
                     combat(current_enemy)    
             if enc_counter == 3:
                 print("treasure") # treasure is a wip sorry -pat
-                progression()
+                progression() 
+                # Ideally treasure will be implemented once an inventory system has been created -pat
 ### /Action Loop 
 
 ### Character Creation
