@@ -52,19 +52,31 @@ npcs = []
 #Weapons
 goose_beak = ItemWeapon({
     "damage_boost": 0,
-    "status_effect": StatusEffect.BLEED
+    "status_effect": StatusEffect.BLEED,
+    "life_steal": 0
 
 })
 toad_hand = ItemWeapon({
     "damage_boost": 1,
-    "status_effect": StatusEffect.WEAK
+    "status_effect": StatusEffect.WEAK,
+    "life_steal": 0
 
 })
+#This is an important one, all things shoud be 0 or None
 no_weapon = ItemWeapon({
     "damage_boost": 0,
-    "status_effect": None
+    "status_effect": None,
+    "life_steal": 0
 
-    })
+})
+absorbers_wand = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None,
+    "life_steal": 45
+})
+
+
+#Enemies
 crab = Entity({
     "name": "crab",
     "health": 20, 
@@ -123,10 +135,26 @@ toad = Entity({
     "Weapon": toad_hand
     
 })
+#Lets start moving away from the animals they are really cool but we should make them cooler
+dark_sprite = Entity({
+    "name": "Dark Sprite",
+    "health": 25, 
+    "stamina": 15, 
+    "strength": 3,
+    "poison": 0,
+    "skill": 6,
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
+    "weapon_effect": StatusEffect.WEAK,
+    "max_stamina": 15,
+    "block_amt": 4,
+    "Weapon": absorbers_wand
+    })
 enemies.append(crab)
 enemies.append(goose)
-#enemies.append(turtle)
+enemies.append(turtle)
 enemies.append(toad)
+enemies.append(dark_sprite)
+#NPCs
 fred = Entity({
     "name": "fred",
     "health": 9001,
@@ -347,8 +375,7 @@ def combat(target_enemy = None):
 
         if player.stamina < player.max_stamina:
             player.stamina += 1
-            #We can code in a max stamina stat later as well as a stamina recovery stat you guys don't like to have a ton a variables floating around ~Kit
-            #Ive added max stamina ~Kit
+           
 
         display_entity_combat_info([player, enemy])
         time.sleep(0.01)
@@ -369,7 +396,7 @@ def combat(target_enemy = None):
         match action:
             case EntityActions.STRIKE.value:
                 if player.stamina > 2:
-                    dmg = ((player.strength - player.status[StatusEffect.WEAK]) + player.weapon.damage_boost) - enemy.block
+                    dmg = (player.strength - player.status[StatusEffect.WEAK]) - enemy.block
                     if dmg < 1:
                         dmg = 0
                     enemy.apply_damage(dmg) 
@@ -425,6 +452,8 @@ def combat(target_enemy = None):
         if enemy.stamina > 2: 
             
             match enem_action:
+
+                
                 case EntityActions.STRIKE.value:
                     dmg = (enemy.strength + enemy.status[StatusEffect.RAGE] + enemy.weapon.damage_boost) - player.block
                     if dmg < 0:
@@ -433,11 +462,17 @@ def combat(target_enemy = None):
                       
                     print(f"{enemy.name.capitalize()} hit you for {dmg} damage. You now have {player.health} health left")
                     if enemy.weapon != no_weapon:
-                        player.apply_status(enemy.weapon.effect, enemy.skill)
-                        print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon.effect.name} to you!")
+                        if enemy.weapon.effect != None:
+                            player.apply_status(enemy.weapon.effect, enemy.skill)
+                            print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon.effect.name} to you!")
+                        if enemy.weapon.life_steal > 0:
+                            enemy.apply_damage(-enemy.calc_lifesteal())
+                            print(f"{enemy.name.capitalize()}'s attack drained {enemy.calc_lifesteal()} health from you!")
                         
                     enemy.stamina -= 3
                         
+
+
                    
                 case EntityActions.ADD_POISON.value:
                     # We should make an `add_status` function to `Entity`

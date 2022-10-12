@@ -52,6 +52,12 @@ class Entity:
 
     def is_dead(self) -> bool:
         return self.health <= 0
+    def calc_lifesteal(self):
+        #Gets the weapon.lifesteal % of the attackers skill. Its really cool! :D ~Kit
+        one_percent = self.skill / 100
+        amount_steal = one_percent * self.weapon.life_steal
+        amount_steal = round(amount_steal)
+        return amount_steal
        #WE will eventually add a get_modifer def that can get all the modifiers for an attack.
 class EntityActions(Enum): #We need some way to remove actions for enemies form the player action list (And i dont think ben would be happy if I made a new Enum) ~Kit
     STRIKE = 0

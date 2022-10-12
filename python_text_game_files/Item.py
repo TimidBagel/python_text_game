@@ -15,6 +15,7 @@ class ItemWeapon(Item):
     def __init__(self, args) -> None:
         self.damage_boost : int = args["damage_boost"]
         self.effect : StatusEffect = args["status_effect"]
+        self.life_steal : int = args["life_steal"]
         
 
 class ItemAccessory(Item):
