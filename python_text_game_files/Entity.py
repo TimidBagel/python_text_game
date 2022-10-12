@@ -12,6 +12,7 @@ class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
         self.health : int = args["health"]
+        self.max_hp : int = args["max_hp"] # we will need to add checks to keep hp from going above max hp -pat
         self.stamina : int = args["stamina"]
         self.strength : int = args["strength"]
         
