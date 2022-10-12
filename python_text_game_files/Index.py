@@ -85,7 +85,7 @@ crab = Entity({
     "poison": 0,
     "skill": 2,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
-    "weapon_effect": None,
+    
     "max_stamina": 10,
     "block_amt": 0,
     "Weapon": no_weapon
@@ -101,7 +101,7 @@ goose = Entity({
     "poison": 0,
     "skill": 1,
     "actions": [EntityActions.STRIKE.value],
-    "weapon_effect": StatusEffect.BLEED,
+    
     "max_stamina": 5,
     "block_amt": 0,
     "Weapon": goose_beak
@@ -115,7 +115,7 @@ turtle = Entity({
     "poison": 0,
     "skill": 12,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
-    "weapon_effect": None,
+    
     "max_stamina": 20,
     "block_amt": 5,
     "Weapon": no_weapon
@@ -129,7 +129,7 @@ toad = Entity({
     "poison": 0,
     "skill": 4,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
-    "weapon_effect": StatusEffect.WEAK,
+   
     "max_stamina": 30,
     "block_amt": 3,
     "Weapon": toad_hand
@@ -144,9 +144,10 @@ dark_sprite = Entity({
     "poison": 0,
     "skill": 6,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
-    "weapon_effect": StatusEffect.WEAK,
+   
     "max_stamina": 15,
     "block_amt": 4,
+    
     "Weapon": absorbers_wand
     })
 enemies.append(crab)
@@ -163,7 +164,7 @@ fred = Entity({
     "poison": 9001,
     "skill": 9001,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
-    "weapon_effect": None,
+   
     "max_stamina": 9001,
     "block_amt": 0,
     "Weapon": no_weapon
@@ -177,7 +178,7 @@ draughlix = Entity({ #martyr npc
     "poison": 4,
     "skill": 10,
     "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value],
-    "weapon_effect": StatusEffect.BLEED,
+   
     "max_stamina": 20,
     "block_amt": 1,
     "Weapon": no_weapon
@@ -193,7 +194,7 @@ player = Entity({
     "poison": 0,
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
-    "weapon_effect": None,
+   
     "max_stamina": 10,
     "block_amt": 3,
     "Weapon": no_weapon

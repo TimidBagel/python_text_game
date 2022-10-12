@@ -29,8 +29,9 @@ class Entity:
             self.status[s] = 0
 
         self.actions : array = args["actions"]
-        self.weapon_effect : StatusEffect = args["weapon_effect"]
+       
         self.block_amt : int = args["block_amt"]
+        
         self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
         
