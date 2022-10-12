@@ -62,7 +62,7 @@ toad_hand = ItemWeapon({
 })
 blade_of_agony = ItemWeapon({ #draughlix weapon - pat
     "damage_boost": 4,
-    "status_effect": StatusEffect.BLEED #i also feel like we should make a new status effect that saps hp from an enemy and heals those who wield the blade -pat
+    "status_effect": StatusEffect.LIFESTEAL #i also feel like we should make a new status effect that saps hp from an enemy and heals those who wield the blade -pat
 })
 no_weapon = ItemWeapon({
     "damage_boost": 0,
@@ -131,10 +131,27 @@ toad = Entity({
     "Weapon": toad_hand
     
 })
+leech = Entity({
+    "name": "leech",
+    "health": 20,
+    "max_hp": 30,
+    "stamina": 20,
+    "strength": 2,
+    "poison": 0,
+    "skill": 3,
+    "actions": [EntityActions.STRIKE.value],
+    "weapon_effect": StatusEffect.LIFESTEAL,
+    "max_stamina": 30,
+    "block_amt": 1,
+    "Weapon": no_weapon
+})
 enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
+enemies.append(leech)
+
+#npcs
 fred = Entity({
     "name": "fred",
     "health": 9001,
@@ -269,6 +286,7 @@ def progression(): #progression loop wip -p
                     print(f"\nDraughlix: OH? so you want to challenge me? Have at it then!")
                     global current_enemy
                     current_enemy = current_npc
+                    enemy_encounter_grp += 1
                     combat(current_enemy)    
             if enc_counter == 3:
                 print("treasure") # treasure is a wip sorry -pat
