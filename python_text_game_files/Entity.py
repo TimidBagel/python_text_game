@@ -11,6 +11,7 @@ import random
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
+        self.race = args["race"]
         self.health : int = args["health"]
         self.stamina : int = args["stamina"]
         self.strength : int = args["strength"]

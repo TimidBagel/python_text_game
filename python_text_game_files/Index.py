@@ -17,10 +17,11 @@ import pathlib
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
+from Race import Race
+from Class import Class
 from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
-
 
 ### Global Variables
 global parent_directory
@@ -46,8 +47,38 @@ player_turn = True
 
 global enemies
 global npcs
+global races
+global classes
 enemies = []
 npcs = []
+races = []
+classes = []
+
+#Races
+human = Race({
+    "name": "Human",
+    "health": 0,
+    "stamina": 0,
+    "strength": 0
+})
+monster = Race({
+    "name": "Monster",
+    "health": 0,
+    "stamina": 0,
+    "strength": 0
+})
+races.append(human)
+races.append(monster)
+
+#Classes
+soldier = Class({
+    "name": "Soldier",
+    "health": 5,
+    "stamina": 5,
+    "strength": 5,
+    "skill": 2
+})
+classes.append(soldier)
 
 #Weapons
 goose_beak = ItemWeapon({
@@ -67,6 +98,7 @@ no_weapon = ItemWeapon({
     })
 crab = Entity({
     "name": "crab",
+    "race": monster,
     "health": 20, 
     "stamina": 10, 
     "strength": 5,
@@ -77,12 +109,11 @@ crab = Entity({
     "max_stamina": 10,
     "block_amt": 0,
     "Weapon": no_weapon
-    
-    
 })
 
 goose = Entity({
     "name": "goose",
+    "race": monster,
     "health": 30, 
     "stamina": 5, 
     "strength": 8,
@@ -97,6 +128,7 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
+    "race": monster,
     "health": 50, 
     "stamina": 20, 
     "strength": 1,
@@ -111,6 +143,7 @@ turtle = Entity({
 })
 toad = Entity({
     "name": "toad",
+    "race": monster,
     "health": 35, 
     "stamina": 30, 
     "strength": 2,
@@ -129,6 +162,7 @@ enemies.append(turtle)
 enemies.append(toad)
 fred = Entity({
     "name": "fred",
+    "race": monster,
     "health": 9001,
     "stamina": 9001,
     "strength": 9001,
@@ -143,6 +177,7 @@ fred = Entity({
 })
 martyr = Entity({ #martyr npc 
     "name": "martyr",
+    "race": monster,
     "health": 90,
     "stamina": 20,
     "strength": 3,
@@ -159,6 +194,7 @@ npcs.append(martyr)
 
 player = Entity({
     "name": "player",
+    "race": human,
     "health": 30, 
     "stamina": 10, 
     "strength": 10,
@@ -171,6 +207,7 @@ player = Entity({
     "Weapon": no_weapon
      
 })
+
 ### /Global Variables 
 
 
@@ -258,6 +295,7 @@ def new_character():
     name = input("Enter a name for your new character: ")
     new_character = Entity({
         "name": name,
+        "race": human,
         "health": 30,
         "stamina": 10,
         "strength": 10,
@@ -459,6 +497,7 @@ def combat():
 ### encryption test
 new_character = Entity({
     "name": "name",
+    "race": human,
     "health": 30,
     "stamina": 10,
     "strength": 10,
