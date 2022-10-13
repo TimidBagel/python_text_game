@@ -24,7 +24,7 @@ from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 #I will do the same with enemies
-from Entity import crab, turtle, toad, goose, dark_sprite
+from Entity import crab, turtle, toad, goose, rabbit, dark_sprite
 
 ### Global Variables
 global parent_directory
@@ -63,6 +63,7 @@ enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
+enemies.append(rabbit)
 enemies.append(dark_sprite)
 #NPCs
 fred = Entity({
@@ -146,13 +147,6 @@ def progression(): #progression loop wip -p
             enemy_encounter_grp += 1
             combat()
         if enc_counter == 2:
-
-            npc_encounters = random.randint(1, len(npcs))
-            if npc_encounters == 1:
-                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
-                progression()
-            if npc_encounters == 2: #We can change to a match/case later
-
             npc_encounters = random.randint(0, len(npcs)-1)
             if npc_encounters == 0:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly :D")

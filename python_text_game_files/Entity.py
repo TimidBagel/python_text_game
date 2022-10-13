@@ -132,6 +132,18 @@ toad = Entity({
     "Weapon": toad_hand
     
 })
+rabbit = Entity({
+    "name": "rabbit",
+    "health": 16,
+    "stamina": 30,
+    "strength": 11,
+    "poison": 0,
+    "skill": 6,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "max_stamina": 30,
+    "block_amt": 0,
+    "Weapon": no_weapon
+})
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
     "name": "Dark Sprite",
