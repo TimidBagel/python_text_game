@@ -142,18 +142,25 @@ def progression(): #progression loop wip -p
         print(f"after fighting through the seemingly endless amounts of animals you have come across...")
         if enc_counter == 1:
             print("another enemy!")
-##<<<<<<< HEAD
+
             enemy_encounter_grp += 1
             combat()
         if enc_counter == 2:
+
             npc_encounters = random.randint(1, len(npcs))
             if npc_encounters == 1:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
                 progression()
             if npc_encounters == 2: #We can change to a match/case later
+
+            npc_encounters = random.randint(0, len(npcs)-1)
+            if npc_encounters == 0:
+                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly :D")
+            if npc_encounters == 1: #We can change to a match/case later
+
                 current_npc = npcs[1]
                 print(f"you have come across the {current_npc.name.capitalize()}") 
-##>>>>>>> main
+
                 has_chosen = False
                 valid_m_actions = ['1','2','3']
                 draughlix_fight = False
