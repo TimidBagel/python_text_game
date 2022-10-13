@@ -60,6 +60,7 @@ class Entity:
         amount_steal = one_percent * self.weapon.life_steal
         amount_steal = round(amount_steal)
         return amount_steal
+    
       
 class EntityActions(Enum): 
     STRIKE = 0

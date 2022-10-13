@@ -312,7 +312,7 @@ def combat(target_enemy = None):
         match action:
             case EntityActions.STRIKE.value:
                 if player.stamina > 2:
-                    dmg = (player.strength - player.status[StatusEffect.WEAK]) - enemy.block
+                    dmg = (player.strength - player.status[StatusEffect.WEAK] + player.status[StatusEffect.RAGE]) - enemy.block
                     if dmg < 1:
                         dmg = 0
                     enemy.apply_damage(dmg) 
