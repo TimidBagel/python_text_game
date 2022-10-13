@@ -20,7 +20,10 @@ from Entity import Entity, EntityActions
 from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
-
+#Alternatively, we can import all the weapons from ITEM ~Kit
+from Item import goose_beak, no_weapon, toad_hand, absorbers_wand
+#I will do the same with enemies
+from Entity import crab, turtle, toad, goose, dark_sprite
 
 ### Global Variables
 global parent_directory
@@ -50,106 +53,11 @@ enemies = []
 npcs = []
 
 #Weapons
-goose_beak = ItemWeapon({
-    "damage_boost": 0,
-    "status_effect": StatusEffect.BLEED,
-    "life_steal": 0
 
-})
-toad_hand = ItemWeapon({
-    "damage_boost": 1,
-    "status_effect": StatusEffect.WEAK,
-    "life_steal": 0
-
-})
-#This is an important one, all things shoud be 0 or None
-no_weapon = ItemWeapon({
-    "damage_boost": 0,
-    "status_effect": None,
-    "life_steal": 0
-
-})
-absorbers_wand = ItemWeapon({
-    "damage_boost": 0,
-    "status_effect": None,
-    "life_steal": 45
-})
 
 
 #Enemies
-crab = Entity({
-    "name": "crab",
-    "health": 20, 
-    "stamina": 10, 
-    "strength": 5,
-    "poison": 0,
-    "skill": 2,
-    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
-    
-    "max_stamina": 10,
-    "block_amt": 0,
-    "Weapon": no_weapon
-    
-    
-})
 
-goose = Entity({
-    "name": "goose",
-    "health": 30, 
-    "stamina": 5, 
-    "strength": 8,
-    "poison": 0,
-    "skill": 1,
-    "actions": [EntityActions.STRIKE.value],
-    
-    "max_stamina": 5,
-    "block_amt": 0,
-    "Weapon": goose_beak
-    
-})
-turtle = Entity({
-    "name": "turtle",
-    "health": 50, 
-    "stamina": 20, 
-    "strength": 1,
-    "poison": 0,
-    "skill": 12,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
-    
-    "max_stamina": 20,
-    "block_amt": 5,
-    "Weapon": no_weapon
-    
-})
-toad = Entity({
-    "name": "toad",
-    "health": 35, 
-    "stamina": 30, 
-    "strength": 2,
-    "poison": 0,
-    "skill": 4,
-    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
-   
-    "max_stamina": 30,
-    "block_amt": 3,
-    "Weapon": toad_hand
-    
-})
-#Lets start moving away from the animals they are really cool but we should make them cooler
-dark_sprite = Entity({
-    "name": "Dark Sprite",
-    "health": 25, 
-    "stamina": 15, 
-    "strength": 3,
-    "poison": 0,
-    "skill": 6,
-    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
-   
-    "max_stamina": 15,
-    "block_amt": 4,
-    
-    "Weapon": absorbers_wand
-    })
 enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
@@ -330,7 +238,20 @@ def display_entity_combat_info(entities):
         
 
 def combat(target_enemy = None):
-    input() # press "enter" to continue turns
+    inp = input()
+    if inp == "Debug":
+        print("Entering Debug Mode")
+        while inp != "Resume":
+            inp = input()
+            match inp:
+                case "getFiles":
+                    curDirPath = os.getcwd()
+                    listONames = os.listdir(curDirPath)
+                    inp = input("List name or extension to find\n")
+                    for i in listONames:
+                        if inp in i:
+                            print(i)
+    # press "enter" to continue turns
     time.sleep(0.1)
 #   Set enemy if unnassigned
     if target_enemy == None:
