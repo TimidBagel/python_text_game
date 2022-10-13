@@ -265,13 +265,38 @@ def progression(): #progression loop wip -p
 ### /Action Loop 
 
 ### Character Creation
+def write_file(path, contents):
+    file = open(path, "w")
+    file.writelines(contents)
+    file.close()
+
+def read_file(path):
+    file = open(path, "r")
+    contents = file.readlines()
+    file.close()
+    return contents
+
 def new_character(character_path):
     print()
-    name = input("Enter a name for your new character: ")
+    name = input_str("Enter a name for your new character: ")
+    print("List of available classes:")
+    for i in range(len(classes)):
+        print(f"{i}. {classes[i]}")
+    _class = input_str("Enter a class name for your new character: ")
+    for i in classes:
+        if _class == i.name:
+            char_class = i
+    print("List of available races:")
+    for i in range(len(races)):
+        print(f"{i}. {races[i]}")
+    race = input_str("Enter a race name for your new character: ")
+    for i in races:
+        if race = i.name:
+            char_race = i
 
     new_character = Entity({
         "name": name,
-        "race": human,
+        "race": char_race,
         "health": 30,
         "stamina": 10,
         "strength": 10,
