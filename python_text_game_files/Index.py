@@ -140,17 +140,31 @@ leech = Entity({
     "poison": 0,
     "skill": 3,
     "actions": [EntityActions.STRIKE.value],
-    "weapon_effect": StatusEffect.LIFESTEAL,
+    "weapon_effect": None,
     "max_stamina": 30,
     "block_amt": 1,
     "Weapon": no_weapon
+})
+rabbit = Entity({
+    "name": "rabbit",
+    "health": 20,
+    "max_hp": 30,
+    "stamina": 30,
+    "strength": 11,
+    "poison": 0,
+    "skill": 6,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "weapon_effect": None,
+    "max_stamina": 30,
+    "block_amt": 0,
+    "Weapon": None
 })
 enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
 enemies.append(leech)
-
+enemies.append(rabbit)
 #npcs
 fred = Entity({
     "name": "fred",
@@ -252,8 +266,8 @@ def progression(): #progression loop wip -p
             combat()
         if enc_counter == 2:
             npc_encounters = random.randint(1, len(npcs))
-            if npc_encounters == 1:
-                print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
+            #if npc_encounters == 1:
+            #    print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
             if npc_encounters == 2: #We can change to a match/case later
                 current_npc = npcs[0]
                 print(f"you have come across the {current_npc.name.capitalize()}") 
