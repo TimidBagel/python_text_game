@@ -127,8 +127,6 @@ def init():
 
 ### /Inventory 
 
-
-
 ### Action Loop 
 def progression(): #progression loop wip -p
     global enemy_encounter_grp
@@ -292,6 +290,9 @@ def combat(target_enemy = None):
 #       Health not over max hp check
         if player.health > player.max_hp:
             player.health = player.max_hp
+        #       enemy health check
+        if enemy.health > enemy.max_hp:
+            enemy.health = enemy.max_hp
 #       Poison check
         
         if bool(player.status[StatusEffect.POISON] > 0):
@@ -375,9 +376,6 @@ def combat(target_enemy = None):
             player_turn = False
     else: # IF its the enemies turn
         print("|| Enemy Turn")
-#       enemy health check
-        if enemy.health > enemy.max_hp:
-            enemy.health = enemy.max_hp
         if enemy.status[StatusEffect.RAGE] > 0:
             enemy.status[StatusEffect.RAGE] -= 1
         enemy.block = 0
