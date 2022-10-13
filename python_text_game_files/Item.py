@@ -75,4 +75,8 @@ absorbers_wand = ItemWeapon({
     "status_effect": None,
     "life_steal": 45
 })
-
+blade_of_agony = ItemWeapon({
+    "damage_boost": 5,
+    "status_effect": StatusEffect.BLEED,
+    "life_steal": 40
+})

@@ -7,12 +7,13 @@ from Item import ItemWeapon
 from Item import ItemTypes
 from StatusEffect import StatusEffect
 import random
-from Item import goose_beak, no_weapon, toad_hand, absorbers_wand
+from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
         self.health : int = args["health"]
+        self.max_hp : int = args["max_hp"]
         self.stamina : int = args["stamina"]
         self.strength : int = args["strength"]
         
@@ -60,7 +61,6 @@ class Entity:
         amount_steal = one_percent * self.weapon.life_steal
         amount_steal = round(amount_steal)
         return amount_steal
-    
       
 class EntityActions(Enum): 
     STRIKE = 0
@@ -75,26 +75,27 @@ class EntityActions(Enum):
 
 crab = Entity({
     "name": "crab",
-    "health": 20, 
+    "health": 20,
+    "max_hp": 20, 
     "stamina": 10, 
     "strength": 5,
-    #"poison": 0,
+    "poison": 0,
     "skill": 2,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
-    
     "max_stamina": 10,
     "block_amt": 0,
     "Weapon": no_weapon
-    
+
     
 })
 
 goose = Entity({
     "name": "goose",
     "health": 30, 
+    "max_hp": 30,
     "stamina": 5, 
     "strength": 8,
-    #"poison": 0,
+    "poison": 0,
     "skill": 1,
     "actions": [EntityActions.STRIKE.value],
     
@@ -105,60 +106,44 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
-    "health": 25, 
-    "stamina": 40, 
+    "health": 30, 
+    "max_hp": 45,
+    "stamina": 20, 
     "strength": 1,
-    #"poison": 0,
+    "poison": 0,
     "skill": 12,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
-    
     "max_stamina": 20,
-    "block_amt": 4,
+    "block_amt": 5,
     "Weapon": no_weapon
     
 })
 toad = Entity({
     "name": "toad",
     "health": 35, 
+    "max_hp": 35,
     "stamina": 30, 
     "strength": 2,
-    #"poison": 0,
+    "poison": 0,
     "skill": 4,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
-   
     "max_stamina": 30,
     "block_amt": 3,
     "Weapon": toad_hand
     
 })
-rabbit = Entity({
-    "name": "rabbit",
-    "health": 16,
-    "stamina": 30,
-    "strength": 11,
-    "poison": 0,
-    "skill": 6,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
-    
-    "max_stamina": 30,
-    "block_amt": 0,
-    "Weapon": no_weapon
-})
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
     "name": "Dark Sprite",
     "health": 25, 
+    "max_hp": 30,
     "stamina": 15, 
     "strength": 3,
-    #"poison": 0,
+    "poison": 0,
     "skill": 6,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
-   
     "max_stamina": 15,
     "block_amt": 4,
-    
     "Weapon": absorbers_wand
     })
-
-
 
