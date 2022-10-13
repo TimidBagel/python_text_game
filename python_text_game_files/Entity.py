@@ -141,7 +141,7 @@ rabbit = Entity({
     
     "max_stamina": 30,
     "block_amt": 0,
-    "Weapon": None
+    "Weapon": no_weapon
 })
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
