@@ -15,6 +15,7 @@ class ItemWeapon(Item):
     def __init__(self, args) -> None:
         self.damage_boost : int = args["damage_boost"]
         self.effect : StatusEffect = args["status_effect"]
+        self.life_steal : int = args["life_steal"]
         
 
 class ItemAccessory(Item):
@@ -50,3 +51,27 @@ class EffectTarget(Enum):
     WEAPON = 0
     SELF = 1
     ENEMY = 2
+
+goose_beak = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": StatusEffect.BLEED,
+    "life_steal": 0
+    })
+toad_hand = ItemWeapon({
+    "damage_boost": 1,
+    "status_effect": StatusEffect.WEAK,
+    "life_steal": 0
+
+})
+#This is an important one, all things shoud be 0 or None
+no_weapon = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None,
+    "life_steal": 0
+
+})
+absorbers_wand = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None,
+    "life_steal": 45
+})
