@@ -24,7 +24,7 @@ from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand
 #I will do the same with enemies
-from Entity import crab, turtle, toad, goose, dark_sprite
+from Entity import crab, turtle, toad, goose, rabbit, dark_sprite
 
 ### Global Variables
 global parent_directory
@@ -63,6 +63,7 @@ enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
+enemies.append(rabbit)
 enemies.append(dark_sprite)
 #NPCs
 fred = Entity({
