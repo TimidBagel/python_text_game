@@ -60,6 +60,7 @@ class Entity:
         amount_steal = one_percent * self.weapon.life_steal
         amount_steal = round(amount_steal)
         return amount_steal
+    
       
 class EntityActions(Enum): 
     STRIKE = 0
@@ -77,7 +78,7 @@ crab = Entity({
     "health": 20, 
     "stamina": 10, 
     "strength": 5,
-    "poison": 0,
+    #"poison": 0,
     "skill": 2,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     
@@ -93,7 +94,7 @@ goose = Entity({
     "health": 30, 
     "stamina": 5, 
     "strength": 8,
-    "poison": 0,
+    #"poison": 0,
     "skill": 1,
     "actions": [EntityActions.STRIKE.value],
     
@@ -104,15 +105,15 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
-    "health": 50, 
-    "stamina": 20, 
+    "health": 25, 
+    "stamina": 40, 
     "strength": 1,
-    "poison": 0,
+    #"poison": 0,
     "skill": 12,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     
     "max_stamina": 20,
-    "block_amt": 5,
+    "block_amt": 4,
     "Weapon": no_weapon
     
 })
@@ -121,7 +122,7 @@ toad = Entity({
     "health": 35, 
     "stamina": 30, 
     "strength": 2,
-    "poison": 0,
+    #"poison": 0,
     "skill": 4,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
    
@@ -130,13 +131,26 @@ toad = Entity({
     "Weapon": toad_hand
     
 })
+rabbit = Entity({
+    "name": "rabbit",
+    "health": 16,
+    "stamina": 30,
+    "strength": 11,
+    "poison": 0,
+    "skill": 6,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    
+    "max_stamina": 30,
+    "block_amt": 0,
+    "Weapon": no_weapon
+})
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
     "name": "Dark Sprite",
     "health": 25, 
     "stamina": 15, 
     "strength": 3,
-    "poison": 0,
+    #"poison": 0,
     "skill": 6,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
    
