@@ -139,7 +139,7 @@ rabbit = Entity({
     "poison": 0,
     "skill": 6,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
-    "weapon_effect": None,
+    
     "max_stamina": 30,
     "block_amt": 0,
     "Weapon": None
