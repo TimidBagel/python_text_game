@@ -140,7 +140,7 @@ leech = Entity({
     "poison": 0,
     "skill": 3,
     "actions": [EntityActions.STRIKE.value],
-    "weapon_effect": None,
+    "weapon_effect": StatusEffect.LIFESTEAL,
     "max_stamina": 30,
     "block_amt": 1,
     "Weapon": no_weapon
