@@ -77,7 +77,7 @@ crab = Entity({
     "health": 20, 
     "stamina": 10, 
     "strength": 5,
-    "poison": 0,
+    #"poison": 0,
     "skill": 2,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     
@@ -93,7 +93,7 @@ goose = Entity({
     "health": 30, 
     "stamina": 5, 
     "strength": 8,
-    "poison": 0,
+    #"poison": 0,
     "skill": 1,
     "actions": [EntityActions.STRIKE.value],
     
@@ -107,7 +107,7 @@ turtle = Entity({
     "health": 50, 
     "stamina": 20, 
     "strength": 1,
-    "poison": 0,
+    #"poison": 0,
     "skill": 12,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     
@@ -121,7 +121,7 @@ toad = Entity({
     "health": 35, 
     "stamina": 30, 
     "strength": 2,
-    "poison": 0,
+    #"poison": 0,
     "skill": 4,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
    
@@ -136,7 +136,7 @@ dark_sprite = Entity({
     "health": 25, 
     "stamina": 15, 
     "strength": 3,
-    "poison": 0,
+    #"poison": 0,
     "skill": 6,
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
    
