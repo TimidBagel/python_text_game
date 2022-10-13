@@ -129,7 +129,6 @@ toad = Entity({
     "max_stamina": 30,
     "block_amt": 3,
     "Weapon": toad_hand
-    
 })
 leech = Entity({
     "name": "leech",
@@ -203,7 +202,7 @@ player = Entity({
     "health": 30,
     "max_hp": 30, 
     "stamina": 10, 
-    "strength": 10,
+    "strength": 15,
     "poison": 0,
     "skill": 5,
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
@@ -254,12 +253,14 @@ def progression(): #progression loop wip -p
             npc_encounters = random.randint(1, len(npcs))
             if npc_encounters == 1:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
+                progression()
             if npc_encounters == 2: #We can change to a match/case later
                 current_npc = npcs[0]
                 print(f"you have come across the {current_npc.name.capitalize()}") 
 ##>>>>>>> main
                 has_chosen = False
                 valid_m_actions = ['1','2','3']
+                draughlix_fight = False
                 while has_chosen == False:
                     m_choice = input(f"""The Draughlix has offered you a deal you can gain more power in exchange for your life force... \n
                     do you 
@@ -285,9 +286,12 @@ def progression(): #progression loop wip -p
                 elif m_choice == '3': # fight is a major wip -pat
                     print(f"\nDraughlix: OH? so you want to challenge me? Have at it then!")
                     global current_enemy
+                    draughlix_fight = True
                     current_enemy = current_npc
                     enemy_encounter_grp += 1
-                    combat(current_enemy)    
+                    while draughlix_fight == True:
+                        combat(current_enemy)
+                        current_enemy = current_npc    
             if enc_counter == 3:
                 print("treasure") # treasure is a wip sorry -pat
                 progression() 
