@@ -1,5 +1,5 @@
 import os
-
+from os.path import exists
 class Console:
     def ConsoleRun():
         inp = input()
@@ -14,11 +14,14 @@ class Console:
                         print(i)
             case "VIEW":
                 inp = input("Please type the script to see(Case Sensitive, you do not need to include \'.py\' for a python file, but you can): ")
-                if not "." in inp:
-                    view = open(inp + ".py", 'r')
+                if exists(inp) or exists(inp+".py"):
+                    if not "." in inp:
+                        view = open(inp + ".py", 'r')
+                    else:
+                        view = open(inp, 'r')
+                    print(view.read())
                 else:
-                    view = open(inp, 'r')
-                print(view.read())
+                    print("No file with that name found!")
             case "HELP":
                 print("GetFiles: See files that contain a string in their name\nView: See the contents of files")
                 
