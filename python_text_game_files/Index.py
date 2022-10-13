@@ -221,6 +221,12 @@ def init():
     user_directory = "userdata/"
     user_path = os.path.join(parent_directory, user_directory)
     character_path = os.path.join(user_path, character_directory)
+    if not os.path.exists(user_path):
+        os.mkdir(user_path)
+    if not os.path.exists(character_path):
+        os.mkdir(character_path)
+
+    return [user_path, character_path]
 
 ### Inventory 
 
@@ -259,40 +265,10 @@ def progression(): #progression loop wip -p
 ### /Action Loop 
 
 ### Character Creation
-def encrypt(base):
-    encrypted = ""
-    for x in base:
-        cipher = chr(ord(x) + 10)
-        if ord(x) >= 97 and ord(x) <= 122:
-            if ord(x) > 112:
-                cipher = chr(ord(x) - 16)
-        elif ord(x) >= 65 and ord(x) <= 90:
-            if ord(x) > 80:
-                cipher = chr(ord(x) - 16)
-        encrypted += cipher
-    return encrypted
-
-def decrypt(base):
-    decrypted = ""
-    for x in base:
-        no_cipher = chr(ord(x) - 10)
-        if ord(x) >= 97 and ord(x) <= 122:
-            if ord(x) < 107:
-                no_cipher = chr(ord(x) + 16)
-        elif ord(x) >= 65 and ord(x) <= 90:
-            if ord(x) < 75:
-                no_cipher = chr(ord(x) + 16)
-        decrypted += no_cipher
-    return decrypted
-
-def new_character():
-    if not os.path.exists(user_path):
-        os.mkdir(user_path)
-    if not os.path.exists(character_path):
-        os.mkdir(character_path)
-
+def new_character(character_path):
     print()
     name = input("Enter a name for your new character: ")
+
     new_character = Entity({
         "name": name,
         "race": human,
@@ -494,34 +470,9 @@ def combat():
         player_turn = True
 
     
-### encryption test
-new_character = Entity({
-    "name": "name",
-    "race": human,
-    "health": 30,
-    "stamina": 10,
-    "strength": 10,
-    "poison": 0,
-    "skill": 5,
-    "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
-    "weapon_effect": None,
-    "max_stamina": 10,
-    "block_amt": 3,
-    "Weapon": no_weapon
-})
-for key in new_character.raw:
-    print(key)
-    print(new_character.raw[key], "\n")
-print("encrypted data:\n")
-for key in new_character.raw:
-    print(encrypt(key))
-    print(encrypt(str(new_character.raw[key])), "\n")
-print("decrypted data:\n")
-for key in new_character.raw:
-    print(decrypt(encrypt(key)))
-    print(decrypt(encrypt(str(new_character.raw[key]))), "\n")
+### Character test
 input()
-### /encryption test
+### /character test
 
 while enemies != [] and not player.is_dead()  and enemy_encounter_grp != 0:
     combat()
