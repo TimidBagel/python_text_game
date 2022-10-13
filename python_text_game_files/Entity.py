@@ -104,15 +104,15 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
-    "health": 50, 
-    "stamina": 20, 
+    "health": 25, 
+    "stamina": 40, 
     "strength": 1,
     "poison": 0,
     "skill": 12,
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     
     "max_stamina": 20,
-    "block_amt": 5,
+    "block_amt": 4,
     "Weapon": no_weapon
     
 })
