@@ -132,7 +132,7 @@ toad = Entity({
 })
 rabbit = Entity({
     "name": "rabbit",
-    "health": 15,
+    "health": 16,
     "stamina": 30,
     "strength": 11,
     "poison": 0,
