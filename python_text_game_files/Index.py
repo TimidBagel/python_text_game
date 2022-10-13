@@ -20,6 +20,7 @@ from Entity import Entity, EntityActions
 from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
+from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand
 #I will do the same with enemies
@@ -240,17 +241,9 @@ def display_entity_combat_info(entities):
 def combat(target_enemy = None):
     inp = input()
     if inp == "Debug":
-        print("Entering Debug Mode")
-        while inp != "Resume":
-            inp = input()
-            match inp:
-                case "getFiles":
-                    curDirPath = os.getcwd()
-                    listONames = os.listdir(curDirPath)
-                    inp = input("List name or extension to find\n")
-                    for i in listONames:
-                        if inp in i:
-                            print(i)
+        print("Entering Debug Mode (Can crash your game, be careful)")
+        Console.ConsoleRun()
+           
     # press "enter" to continue turns
     time.sleep(0.1)
 #   Set enemy if unnassigned
@@ -357,7 +350,7 @@ def combat(target_enemy = None):
                     player.status[StatusEffect.BLEED] -= 4
                     if player.status[StatusEffect.BLEED] < 0:
                         player.status[StatusEffect.BLEED] = 0
-
+          
 #       End Player Turn
         if not enemy.is_dead():
             player_turn = False
