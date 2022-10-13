@@ -152,8 +152,7 @@ def progression(): #progression loop wip -p
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly") 
                 progression()
             if npc_encounters == 2: #We can change to a match/case later
-
-            npc_encounters = random.randint(0, len(npcs)-1)
+                npc_encounters = random.randint(0, len(npcs)-1)
             if npc_encounters == 0:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly :D")
             if npc_encounters == 1: #We can change to a match/case later
