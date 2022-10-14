@@ -17,9 +17,12 @@ import pathlib
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
+from Race import Race, races, human, halfling, monster
+from Class import Class, classes, peasant, soldier, mage
 from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
+
 from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
@@ -50,23 +53,87 @@ player_turn = True
 
 global enemies
 global npcs
+global races
+global classes
 enemies = []
 npcs = []
 
 #Weapons
+goose_beak = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": StatusEffect.BLEED
 
+})
+toad_hand = ItemWeapon({
+    "damage_boost": 1,
+    "status_effect": StatusEffect.WEAK
 
+})
+no_weapon = ItemWeapon({
+    "damage_boost": 0,
+    "status_effect": None
 
-#Enemies
+    })
+crab = Entity({
+    "name": "crab",
+    "health": 20, 
+    "stamina": 10, 
+    "strength": 5,
+    "poison": 0,
+    "skill": 2,
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
+    "weapon_effect": None,
+    "max_stamina": 10,
+    "block_amt": 0,
+    "Weapon": no_weapon
+})
 
+goose = Entity({
+    "name": "goose",
+    "health": 30, 
+    "stamina": 5, 
+    "strength": 8,
+    "poison": 0,
+    "skill": 1,
+    "actions": [EntityActions.STRIKE.value],
+    "weapon_effect": StatusEffect.BLEED,
+    "max_stamina": 5,
+    "block_amt": 0,
+    "Weapon": goose_beak
+    
+})
+turtle = Entity({
+    "name": "turtle",
+    "health": 50, 
+    "stamina": 20, 
+    "strength": 1,
+    "poison": 0,
+    "skill": 12,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
+    "weapon_effect": None,
+    "max_stamina": 20,
+    "block_amt": 5,
+    "Weapon": no_weapon
+    
+})
+toad = Entity({
+    "name": "toad",
+    "health": 35, 
+    "stamina": 30, 
+    "strength": 2,
+    "poison": 0,
+    "skill": 4,
+    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
+    "weapon_effect": StatusEffect.WEAK,
+    "max_stamina": 30,
+    "block_amt": 3,
+    "Weapon": toad_hand
+    
+})
 enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
-enemies.append(rabbit)
-enemies.append(dark_sprite)
-enemies.append(steelblade_squire)
-#NPCs
 fred = Entity({
     "name": "fred",
     "health": 9001,
@@ -82,8 +149,8 @@ fred = Entity({
     "is_enemy": True
     
 })
-draughlix = Entity({ #martyr npc 
-    "name": "draughlix",
+martyr = Entity({ #martyr npc 
+    "name": "martyr",
     "health": 90,
     "max_hp": 90,
     "stamina": 20,
@@ -101,6 +168,7 @@ npcs.append(draughlix)
 
 player = Entity({
     "name": "player",
+    "race": human,
     "health": 30, 
     "max_hp": 30,
     "stamina": 15, 
@@ -114,19 +182,13 @@ player = Entity({
     "is_enemy": False
      
 })
+
 ### /Global Variables 
 
 
 ### Input Validation 
 
 ### /Input Validation 
-
-def init():
-    parent_directory = pathlib.Path(__file__).parent.resolve()
-    character_directory = "characters/"
-    user_directory = "userdata/"
-    user_path = os.path.join(parent_directory, user_directory)
-    character_path = os.path.join(user_path, character_directory)
 
 ### Inventory 
 
@@ -205,39 +267,88 @@ def progression(): #progression loop wip -p
 ### /Action Loop 
 
 ### Character Creation
-def encrypt(base):
-    encrypted = ""
-    for x in base:
-        cipher = chr(ord(x) + 10)
-        if ord(x) >= 97 and ord(x) <= 122:
-            if ord(x) > 112:
-                cipher = chr(ord(x) - 16)
-        elif ord(x) >= 65 and ord(x) <= 90:
-            if ord(x) > 80:
-                cipher = chr(ord(x) - 16)
-        encrypted += cipher
-    return encrypted
+def write_file(path, contents):
+    file = open(path, "w")
+    for i in contents:
+        file.write(f"{i} {contents[i]}\n")
+    file.close()
 
-def decrypt(base):
-    decrypted = ""
-    for x in base:
-        no_cipher = chr(ord(x) - 10)
-        if ord(x) >= 97 and ord(x) <= 122:
-            if ord(x) < 107:
-                no_cipher = chr(ord(x) + 16)
-        elif ord(x) >= 65 and ord(x) <= 90:
-            if ord(x) < 75:
-                no_cipher = chr(ord(x) + 16)
-        decrypted += no_cipher
-    return decrypted
+def read_file(path):
+    file = open(path, "r")
+    contents = file.readlines()
+    file.close()
+    return contents
 
-def new_character():
-    if not os.path.exists(user_path):
-        os.mkdir(user_path)
-    if not os.path.exists(character_path):
-        os.mkdir(character_path)
+def new_character(character_path):
+    print()
+    name = input_str("Enter a name for your new character: ")
+    
+    print("List of available classes:")
 
-def fetch_character(name):
+    for i in range(len(classes)):
+        print(f"{i}. {classes[i].name}")
+    
+    found = False
+    while not found:
+        _class = input_str("Enter a class name for your new character: ")
+
+        for i in classes:
+            if _class.lower() == i.name.lower():
+                char_class = i
+                found = True
+        
+        if not found:
+            print(f"Class name '{_class}' not found. Please enter a valid class name.")
+        
+    
+    print("List of available races:")
+
+    for i in range(len(races)):
+        print(f"{i}. {races[i].name}")
+    
+    found = False
+    while not found:
+        race = input_str("Enter a race name for your new character: ")
+
+        for i in races:
+            if race.lower() == i.name.lower():
+                char_race = i
+                found = True
+
+        if not found:
+            print(f"Race name '{race}' not found. Please enter a valid race name.")
+
+    new_character = Entity({
+        "name": name,
+        "race": char_race,
+        "Class": char_class,
+        "health": 30 + char_race.health + char_class.health,
+        "stamina": 10 + char_race.stamina + char_class.stamina,
+        "strength": 10 + char_race.strength + char_class.strength,
+        "poison": 0,
+        "skill": 5 + char_class.skill,
+        "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
+        "weapon_effect": None,
+        "max_stamina": 10,
+        "block_amt": 3,
+        "Weapon": no_weapon
+    })
+
+    write_file(f"{character_path}{name}.json", new_character.raw)
+
+    print(f"""
+
+Character Information:
+    Name: '{new_character.name}'
+    Race: '{new_character.race.name}'
+   Class: '{new_character.Class.name}'
+  Health: {new_character.health}
+ Stamina: {new_character.stamina}
+Strength: {new_character.strength}
+   Skill: {new_character.skill}
+    """)
+
+def fetch_character(name): # wip for fetching character files
     return character
 ### /Character Creation
 
@@ -364,6 +475,19 @@ def combat(target_enemy = None):
         
    
     
+### Character test
+parent_directory = pathlib.Path(__file__).parent.resolve()
+character_directory = "characters/"
+user_directory = "userdata/"
+user_path = os.path.join(parent_directory, user_directory)
+character_path = os.path.join(user_path, character_directory)
+if not os.path.exists(user_path):
+    os.mkdir(user_path)
+if not os.path.exists(character_path):
+    os.mkdir(character_path)
+new_character(character_path)
+input()
+### /character test
 
 while enemies != [] and not player.is_dead() and enemy_encounter_grp != 0:
     combat()

@@ -7,6 +7,8 @@ from Item import ItemWeapon
 from Item import ItemTypes
 from Item import ItemConsumable
 from StatusEffect import StatusEffect
+from Race import monster
+from Class import peasant
 import random
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 
@@ -15,6 +17,8 @@ from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agon
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
+        self.race = args.setdefault('race', monster)
+        self.Class = args.setdefault('Class', peasant)
         self.health : int = args["health"]
         self.max_hp : int = args["max_hp"]
         self.stamina : int = args["stamina"]
@@ -39,6 +43,8 @@ class Entity:
         
         self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
+
+        self.raw : dict = args
         self.is_enemy : bool = args["is_enemy"]
         
 
