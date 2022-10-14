@@ -6,12 +6,15 @@ from enum import Enum
 from Item import ItemWeapon
 from Item import ItemTypes
 from StatusEffect import StatusEffect
+from Race import monster
+from Class import peasant
 import random
 
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
-        self.race = args["race"]
+        self.race = args.setdefault('race', monster)
+        self.Class = args.setdefault('Class', peasant)
         self.health : int = args["health"]
         self.stamina : int = args["stamina"]
         self.strength : int = args["strength"]
