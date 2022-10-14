@@ -11,6 +11,7 @@ import random
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 
 
+
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
@@ -129,7 +130,10 @@ class Entity:
                     print(f"{self.name.capitalize()} braced and added {self.skill} thorns to itself!!")
                     
         else:
-            print(f"{enemy.name.capitalize()} is too tired to act!")
+            print(f"{self.name.capitalize()} is too tired to act!")
+       
+            
+    
       
 class EntityActions(Enum): 
     STRIKE = 0
