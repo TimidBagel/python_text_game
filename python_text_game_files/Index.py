@@ -153,7 +153,7 @@ def progression(): #progression loop wip -p
                 progression()
             if npc_encounters == 2: #We can change to a match/case later
 
-            npc_encounters = random.randint(0, len(npcs)-1)
+                npc_encounters = random.randint(0, len(npcs)-1)
             if npc_encounters == 0:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly :D")
             if npc_encounters == 1: #We can change to a match/case later
@@ -415,14 +415,7 @@ def combat(target_enemy = None):
 
 
                    
-                case EntityActions.ADD_POISON.value:
-                    # We should make an `add_status` function to `Entity`
-                    # I want a bleed status that deals damage when you hit something or use a skill ~Ben
-                    #Me Too! I'll do that  ~Kit
-                    
-                    player.apply_status(StatusEffect.POISON, enemy.skill)
-                    print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
-                    enemy.stamina -= 2
+             
                         
                 case EntityActions.HEAL.value:
                     enemy.apply_damage(-enemy.skill) #Using negative attack damage for healing Big brain ~Kit
@@ -435,6 +428,14 @@ def combat(target_enemy = None):
                     enemy.apply_status(StatusEffect.RAGE, enemy.skill)
                     print(f"{enemy.name.capitalize()} is getting pumped and added {enemy.skill} rage to itself!!")
                     enemy.stamina -= 3
+                case EntityActions.ADD_POISON.value:
+                    # We should make an `add_status` function to `Entity`
+                    # I want a bleed status that deals damage when you hit something or use a skill ~Ben
+                    #Me Too! I'll do that  ~Kit
+                    
+                    player.apply_status(StatusEffect.POISON, enemy.skill)
+                    print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
+                    enemy.stamina -= 2
             if enemy.stamina < 0:
                 enemy.stamina = 0
             
