@@ -76,7 +76,8 @@ fred = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
     "max_stamina": 9001,
     "block_amt": 0,
-    "Weapon": no_weapon
+    "Weapon": no_weapon,
+    "is_enemy": True
     
 })
 draughlix = Entity({ #martyr npc 
@@ -90,7 +91,8 @@ draughlix = Entity({ #martyr npc
     "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value, EntityActions.ADD_RAGE],
     "max_stamina": 20,
     "block_amt": 1,
-    "Weapon": blade_of_agony
+    "Weapon": blade_of_agony,
+    "is_enemy": True
 })
 npcs.append(fred)
 npcs.append(draughlix)
@@ -106,7 +108,8 @@ player = Entity({
     "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
     "max_stamina": 15,
     "block_amt": 3,
-    "Weapon": no_weapon
+    "Weapon": no_weapon,
+    "is_enemy": False
      
 })
 ### /Global Variables 
@@ -153,7 +156,7 @@ def progression(): #progression loop wip -p
                 progression()
             if npc_encounters == 2: #We can change to a match/case later
 
-            npc_encounters = random.randint(0, len(npcs)-1)
+                npc_encounters = random.randint(0, len(npcs)-1)
             if npc_encounters == 0:
                 print("You have found fred. Oh no. He rises into the air, and snaps your neck, killing you instantly :D")
             if npc_encounters == 1: #We can change to a match/case later
@@ -318,10 +321,10 @@ def combat(target_enemy = None):
         if player.stamina < player.max_stamina:
             player.stamina += 1
            
-
+        player.block = 0
         display_entity_combat_info([player, enemy])
         time.sleep(0.01)
-        player.block = 0
+       
         print("What will you do?\n")
         time.sleep(0.01)
         print("Player Actions:")
@@ -335,48 +338,7 @@ def combat(target_enemy = None):
         action = input_int("Choose an Action: ")
         print("")
 
-        match action:
-            case EntityActions.STRIKE.value:
-                if player.stamina > 2:
-                    dmg = (player.strength - player.status[StatusEffect.WEAK]) - enemy.block
-                    if dmg < 1:
-                        dmg = 0
-                    enemy.apply_damage(dmg) 
-                   
-                    print(f"Struck {enemy.name.capitalize()} with {dmg} damage")
-                    time.sleep(0.01)
-                    print(f"{enemy.name.capitalize()} now has {enemy.health} Health")
-                    time.sleep(0.01)
-                    if bool(player.status[StatusEffect.BLEED] > 0):
-                        print(f"Your rapid movements worsened your bleeding.")
-                        time.sleep(0.01)
-                        player.call_status(StatusEffect.BLEED, 1)
-                        print(f"You took 1 damage from bleeding. You now have {player.health} health remaining")
-                        time.sleep(0.01)
-                        player.status[StatusEffect.BLEED] += 1
-                    player.stamina -= 3
-                else:
-                    print("You are too tired to take that action!")
-                    
-                if enemy.is_dead():
-                    print(f"\n{enemy.name.capitalize()} has fallen in battle")
-                    enemies.remove(enemy)
-                    current_enemy = -1
-                    global enemy_encounter_grp
-                    enemy_encounter_grp = 0
-
-                    for s in StatusEffect:
-                        player.status[s] = 0
-                    player.stamina = 10
-            case EntityActions.BLOCK.value:
-                print(f"You added {player.block_amt} block to self!")
-                time.sleep(0.01)
-                player.block += player.block_amt
-                if bool(player.status[StatusEffect.BLEED] > 0):
-                    print(f"Your resting lessened your bleeding.")
-                    player.status[StatusEffect.BLEED] -= 4
-                    if player.status[StatusEffect.BLEED] < 0:
-                        player.status[StatusEffect.BLEED] = 0
+        player.take_turn(enemy, action)
           
 #       End Player Turn
         if not enemy.is_dead():
@@ -389,57 +351,11 @@ def combat(target_enemy = None):
         if enemy.stamina < enemy.max_stamina:
             enemy.stamina += 1
       
-        enem_action = random.choice((enemy.actions))
-        if enemy.stamina > 2: 
+        enemy.take_turn(player, random.choice(enemy.actions))
+        if enemy.stamina < 0:
+            enemy.stamina = 0
             
-            match enem_action:
-
-                
-                case EntityActions.STRIKE.value:
-                    dmg = (enemy.strength + enemy.status[StatusEffect.RAGE] + enemy.weapon.damage_boost) - player.block
-                    if dmg < 0:
-                        dmg = 0
-                    player.apply_damage(dmg) 
-                      
-                    print(f"{enemy.name.capitalize()} hit you for {dmg} damage. You now have {player.health} health left")
-                    if enemy.weapon != no_weapon:
-                        if enemy.weapon.effect != None:
-                            player.apply_status(enemy.weapon.effect, enemy.skill)
-                            print(f"{enemy.name.capitalize()}'s attack added {enemy.skill} {enemy.weapon.effect.name} to you!")
-                        if enemy.weapon.life_steal > 0:
-                            enemy.apply_damage(-enemy.calc_lifesteal())
-                            print(f"{enemy.name.capitalize()}'s attack drained {enemy.calc_lifesteal()} health from you!")
-                        
-                    enemy.stamina -= 3
-                        
-
-
-                   
-                case EntityActions.ADD_POISON.value:
-                    # We should make an `add_status` function to `Entity`
-                    # I want a bleed status that deals damage when you hit something or use a skill ~Ben
-                    #Me Too! I'll do that  ~Kit
-                    
-                    player.apply_status(StatusEffect.POISON, enemy.skill)
-                    print(f"{enemy.name.capitalize()} spit at you and added {enemy.skill} poison!")
-                    enemy.stamina -= 2
-                        
-                case EntityActions.HEAL.value:
-                    enemy.apply_damage(-enemy.skill) #Using negative attack damage for healing Big brain ~Kit
-                    print(f"{enemy.name.capitalize()} healed for {enemy.skill} damage. It now has {enemy.health} health left")
-                    enemy.stamina -= 4
-                case EntityActions.BLOCK.value:
-                    enemy.block += enemy.block_amt
-                    print(f"{enemy.name.capitalize()} added {enemy.block_amt} block to self!")
-                case EntityActions.ADD_RAGE.value:
-                    enemy.apply_status(StatusEffect.RAGE, enemy.skill)
-                    print(f"{enemy.name.capitalize()} is getting pumped and added {enemy.skill} rage to itself!!")
-                    enemy.stamina -= 3
-            if enemy.stamina < 0:
-                enemy.stamina = 0
-            
-        else:
-            print(f"{enemy.name.capitalize()} is too tired to act!")
+      
 #       End Enemy Turn
         player_turn = True
         

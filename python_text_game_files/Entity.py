@@ -1,6 +1,6 @@
 # Entity.py
 # Contributors: Ben, Cormac
-
+#Testing
 from array import array
 from enum import Enum
 from Item import ItemWeapon
@@ -8,6 +8,7 @@ from Item import ItemTypes
 from StatusEffect import StatusEffect
 import random
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
+from Index import Index
 
 class Entity:
     def __init__(self, args) -> None:
@@ -36,6 +37,7 @@ class Entity:
         
         self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
+        self.is_enemy : bool = args["is_enemy"]
         
 
 #   Sets `health` to 0 if its below 0
@@ -61,6 +63,60 @@ class Entity:
         amount_steal = one_percent * self.weapon.life_steal
         amount_steal = round(amount_steal)
         return amount_steal
+    def take_turn(self, target, action: int):
+        if self.stamina > 2: 
+            
+            match action:
+
+                
+                case EntityActions.STRIKE.value:
+                    dmg = (self.strength + (self.status[StatusEffect.RAGE] - self.status[StatusEffect.WEAK]) + self.weapon.damage_boost) - target.block
+                    if dmg < 0:
+                        dmg = 0
+                    target.apply_damage(dmg) 
+                      
+                    print(f"{self.name.capitalize()} hit {target.name.capitalize()} for {dmg} damage. {target.name.capitalize()} now has {target.health} health left")
+                    if self.weapon != no_weapon:
+                        if self.weapon.effect != None:
+                            target.apply_status(self.weapon.effect, self.skill)
+                            print(f"{self.name.capitalize()}'s attack added {self.skill} {self.weapon.effect.name} to {target.name.capitalize()}!")
+                        if self.weapon.life_steal > 0:
+                            self.apply_damage(-self.calc_lifesteal())
+                            print(f"{self.name.capitalize()}'s attack drained {self.calc_lifesteal()} health from {target.name.capitalize()}!")
+                        
+                    self.stamina -= 3
+                        
+
+
+                   
+             
+                        
+                case EntityActions.HEAL.value:
+                    self.apply_damage(-self.skill) #Using negative attack damage for healing Big brain ~Kit
+                    print(f"{self.name.capitalize()} healed for {self.skill} damage. It now has {self.health} health left")
+                    self.stamina -= 4
+
+                    
+                case EntityActions.BLOCK.value:
+                    self.block += self.block_amt
+                    print(f"{self.name.capitalize()} added {self.block_amt} block to self!")
+
+                    
+                case EntityActions.ADD_RAGE.value:
+                    self.apply_status(StatusEffect.RAGE, self.skill)
+                    print(f"{self.name.capitalize()} is getting pumped and added {self.skill} rage to itself!!")
+                    self.stamina -= 3
+                    
+                case EntityActions.ADD_POISON.value:
+                    # We should make an `add_status` function to `Entity`
+                    # I want a bleed status that deals damage when you hit something or use a skill ~Ben
+                    #Me Too! I'll do that  ~Kit
+                    
+                    target.apply_status(StatusEffect.POISON, self.skill)
+                    print(f"{self.name.capitalize()} spit at {target.name.capitalize()} and added {self.skill} poison!")
+                    self.stamina -= 2
+        else:
+            print(f"{enemy.name.capitalize()} is too tired to act!")
       
 class EntityActions(Enum): 
     STRIKE = 0
@@ -84,7 +140,8 @@ crab = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
     "max_stamina": 10,
     "block_amt": 0,
-    "Weapon": no_weapon
+    "Weapon": no_weapon,
+    "is_enemy": True
 
     
 })
@@ -101,7 +158,8 @@ goose = Entity({
     
     "max_stamina": 5,
     "block_amt": 0,
-    "Weapon": goose_beak
+    "Weapon": goose_beak,
+    "is_enemy": True
     
 })
 turtle = Entity({
@@ -115,7 +173,8 @@ turtle = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
     "max_stamina": 20,
     "block_amt": 5,
-    "Weapon": no_weapon
+    "Weapon": no_weapon,
+    "is_enemy": True
     
 })
 toad = Entity({
@@ -129,7 +188,8 @@ toad = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
     "max_stamina": 30,
     "block_amt": 3,
-    "Weapon": toad_hand
+    "Weapon": toad_hand,
+    "is_enemy": True
     
 })
 #Lets start moving away from the animals they are really cool but we should make them cooler
@@ -144,6 +204,7 @@ dark_sprite = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value, EntityActions.BLOCK.value, EntityActions.HEAL.value],
     "max_stamina": 15,
     "block_amt": 4,
-    "Weapon": absorbers_wand
+    "Weapon": absorbers_wand,
+    "is_enemy": True
     })
 
