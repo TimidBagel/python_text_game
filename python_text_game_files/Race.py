@@ -9,30 +9,3 @@ class Race:
         self.strength : int = args["strength"]
         
         self.raw : dict = args
-
-human = Race({
-    "name": "Human",
-    "health": 0,
-    "stamina": 0,
-    "strength": 0
-})
-
-halfling = Race({
-    "name": "Halfling",
-    "health": 5,
-    "stamina": -5,
-    "strength": -5
-})
-
-monster = Race({
-    "name": "Monster",
-    "health": 0,
-    "stamina": 0,
-    "strength": 0
-})
-
-races = []
-
-races.append(human)
-races.append(halfling)
-races.append(monster)

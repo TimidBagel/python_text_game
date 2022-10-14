@@ -11,33 +11,3 @@ class Class:
         self.skill : int = args["skill"]
         
         self.raw : dict = args
-
-peasant = Class({
-    "name": "Peasant",
-    "health": 0,
-    "stamina": 0,
-    "strength": 0,
-    "skill": 0
-})
-
-soldier = Class({
-    "name": "Soldier",
-    "health": 5,
-    "stamina": 5,
-    "strength": 5,
-    "skill": 2
-})
-
-mage = Class({
-    "name": "Mage",
-    "health": -2,
-    "stamina": 5,
-    "strength": -6,
-    "skill": 10
-})
-
-classes = []
-
-classes.append(peasant)
-classes.append(soldier)
-classes.append(mage)

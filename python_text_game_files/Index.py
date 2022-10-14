@@ -17,8 +17,8 @@ import pathlib
 
 ### Scripted Modules 
 from Entity import Entity, EntityActions
-from Race import Race, races, human, halfling, monster
-from Class import Class, classes, peasant, soldier, mage
+from Race import Race
+from Class import Class
 from Item import Item, ItemTypes, ItemWeapon
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
@@ -51,6 +51,34 @@ global races
 global classes
 enemies = []
 npcs = []
+races = []
+classes = []
+
+#Races
+human = Race({
+    "name": "Human",
+    "health": 0,
+    "stamina": 0,
+    "strength": 0
+})
+monster = Race({
+    "name": "Monster",
+    "health": 0,
+    "stamina": 0,
+    "strength": 0
+})
+races.append(human)
+races.append(monster)
+
+#Classes
+soldier = Class({
+    "name": "Soldier",
+    "health": 5,
+    "stamina": 5,
+    "strength": 5,
+    "skill": 2
+})
+classes.append(soldier)
 
 #Weapons
 goose_beak = ItemWeapon({
@@ -70,6 +98,7 @@ no_weapon = ItemWeapon({
     })
 crab = Entity({
     "name": "crab",
+    "race": monster,
     "health": 20, 
     "stamina": 10, 
     "strength": 5,
@@ -84,6 +113,7 @@ crab = Entity({
 
 goose = Entity({
     "name": "goose",
+    "race": monster,
     "health": 30, 
     "stamina": 5, 
     "strength": 8,
@@ -98,6 +128,7 @@ goose = Entity({
 })
 turtle = Entity({
     "name": "turtle",
+    "race": monster,
     "health": 50, 
     "stamina": 20, 
     "strength": 1,
@@ -112,6 +143,7 @@ turtle = Entity({
 })
 toad = Entity({
     "name": "toad",
+    "race": monster,
     "health": 35, 
     "stamina": 30, 
     "strength": 2,
@@ -128,9 +160,9 @@ enemies.append(crab)
 enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
-
 fred = Entity({
     "name": "fred",
+    "race": monster,
     "health": 9001,
     "stamina": 9001,
     "strength": 9001,
@@ -145,6 +177,7 @@ fred = Entity({
 })
 martyr = Entity({ #martyr npc 
     "name": "martyr",
+    "race": monster,
     "health": 90,
     "stamina": 20,
     "strength": 3,
@@ -182,9 +215,24 @@ player = Entity({
 
 ### /Input Validation 
 
+def init():
+    parent_directory = pathlib.Path(__file__).parent.resolve()
+    character_directory = "characters/"
+    user_directory = "userdata/"
+    user_path = os.path.join(parent_directory, user_directory)
+    character_path = os.path.join(user_path, character_directory)
+    if not os.path.exists(user_path):
+        os.mkdir(user_path)
+    if not os.path.exists(character_path):
+        os.mkdir(character_path)
+
+    return [user_path, character_path]
+
 ### Inventory 
 
 ### /Inventory 
+
+
 
 ### Action Loop 
 def progression(): #progression loop wip -p
@@ -219,8 +267,7 @@ def progression(): #progression loop wip -p
 ### Character Creation
 def write_file(path, contents):
     file = open(path, "w")
-    for i in contents:
-        file.write(f"{i} {contents[i]}\n")
+    file.writelines(contents)
     file.close()
 
 def read_file(path):
@@ -232,51 +279,29 @@ def read_file(path):
 def new_character(character_path):
     print()
     name = input_str("Enter a name for your new character: ")
-    
     print("List of available classes:")
-
     for i in range(len(classes)):
-        print(f"{i}. {classes[i].name}")
-    
-    found = False
-    while not found:
-        _class = input_str("Enter a class name for your new character: ")
-
-        for i in classes:
-            if _class.lower() == i.name.lower():
-                char_class = i
-                found = True
-        
-        if not found:
-            print(f"Class name '{_class}' not found. Please enter a valid class name.")
-        
-    
+        print(f"{i}. {classes[i]}")
+    _class = input_str("Enter a class name for your new character: ")
+    for i in classes:
+        if _class == i.name:
+            char_class = i
     print("List of available races:")
-
     for i in range(len(races)):
-        print(f"{i}. {races[i].name}")
-    
-    found = False
-    while not found:
-        race = input_str("Enter a race name for your new character: ")
-
-        for i in races:
-            if race.lower() == i.name.lower():
-                char_race = i
-                found = True
-
-        if not found:
-            print(f"Race name '{race}' not found. Please enter a valid race name.")
+        print(f"{i}. {races[i]}")
+    race = input_str("Enter a race name for your new character: ")
+    for i in races:
+        if race = i.name:
+            char_race = i
 
     new_character = Entity({
         "name": name,
         "race": char_race,
-        "Class": char_class,
-        "health": 30 + char_race.health + char_class.health,
-        "stamina": 10 + char_race.stamina + char_class.stamina,
-        "strength": 10 + char_race.strength + char_class.strength,
+        "health": 30,
+        "stamina": 10,
+        "strength": 10,
         "poison": 0,
-        "skill": 5 + char_class.skill,
+        "skill": 5,
         "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
         "weapon_effect": None,
         "max_stamina": 10,
@@ -284,21 +309,7 @@ def new_character(character_path):
         "Weapon": no_weapon
     })
 
-    write_file(f"{character_path}{name}.json", new_character.raw)
-
-    print(f"""
-
-Character Information:
-    Name: '{new_character.name}'
-    Race: '{new_character.race.name}'
-   Class: '{new_character.Class.name}'
-  Health: {new_character.health}
- Stamina: {new_character.stamina}
-Strength: {new_character.strength}
-   Skill: {new_character.skill}
-    """)
-
-def fetch_character(name): # wip for fetching character files
+def fetch_character(name):
     return character
 ### /Character Creation
 
@@ -485,16 +496,6 @@ def combat():
 
     
 ### Character test
-parent_directory = pathlib.Path(__file__).parent.resolve()
-character_directory = "characters/"
-user_directory = "userdata/"
-user_path = os.path.join(parent_directory, user_directory)
-character_path = os.path.join(user_path, character_directory)
-if not os.path.exists(user_path):
-    os.mkdir(user_path)
-if not os.path.exists(character_path):
-    os.mkdir(character_path)
-new_character(character_path)
 input()
 ### /character test
 
