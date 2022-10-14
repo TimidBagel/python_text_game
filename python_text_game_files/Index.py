@@ -24,7 +24,7 @@ from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 #I will do the same with enemies
-from Entity import crab, turtle, toad, goose, dark_sprite
+from Entity import crab, turtle, toad, goose, dark_sprite, steelblade_squire
 
 ### Global Variables
 global parent_directory
@@ -64,6 +64,7 @@ enemies.append(goose)
 enemies.append(turtle)
 enemies.append(toad)
 enemies.append(dark_sprite)
+enemies.append(steelblade_squire)
 #NPCs
 fred = Entity({
     "name": "fred",
@@ -146,7 +147,8 @@ def progression(): #progression loop wip -p
         if enc_counter == 1:
             print("another enemy!")
 
-            enemy_encounter_grp += 1
+            enemy_encounter_grp = 1
+            
             combat()
         if enc_counter == 2:
 
@@ -265,6 +267,7 @@ def display_entity_combat_info(entities):
         
 
 def combat(target_enemy = None):
+    global enemy_encounter_grp
     inp = input()
     if inp == "Debug":
         print("Entering Debug Mode (Can crash your game, be careful)")
@@ -333,7 +336,7 @@ def combat(target_enemy = None):
             print(f"| {action.value}: {action.name.lower().capitalize()}")
             time.sleep(0.01)
 
-    #   Replace with `input_int` when `InputValidation` is made ~Ben
+   
       
         action = input_int("Choose an Action: ")
         print("")
@@ -343,6 +346,10 @@ def combat(target_enemy = None):
 #       End Player Turn
         if not enemy.is_dead():
             player_turn = False
+        else:
+            enemy_encounter_grp = 0
+            print(f"{enemy.name.capitalize()} has fallen in battle")
+            enemies.remove(enemy)
     else: # IF its the enemies turn
         print("|| Enemy Turn")
         if enemy.status[StatusEffect.RAGE] > 0:
@@ -359,16 +366,15 @@ def combat(target_enemy = None):
 #       End Enemy Turn
         player_turn = True
         
-
+   
     
 
-while enemies != [] and not player.is_dead()  and enemy_encounter_grp != 0:
-    
-    
+while enemies != [] and not player.is_dead() and enemy_encounter_grp != 0:
     combat()
     
-    if enemy_encounter_grp == 0:
-        progression()
+if enemy_encounter_grp == 0:
+    progression()
+    current_enemy = -1
 if player.is_dead():
     print("You have died!")
 ### /Game Loop 
