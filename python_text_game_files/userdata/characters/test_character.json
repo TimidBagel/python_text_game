@@ -1,0 +1,13 @@
+name test_character
+race <Race.Race object at 0x000001D984210940>
+Class <Class.Class object at 0x000001D984212B90>
+health 35
+stamina 15
+strength 15
+poison 0
+skill 7
+actions [<EntityActions.STRIKE: 0>, <EntityActions.BLOCK: 1>]
+weapon_effect None
+max_stamina 10
+block_amt 3
+Weapon <Item.ItemWeapon object at 0x000001D9842128C0>
