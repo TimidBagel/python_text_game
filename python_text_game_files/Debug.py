@@ -1,5 +1,6 @@
 import os
 from os.path import exists
+
 class Console:
     def ConsoleRun():
         inp = input()
@@ -24,6 +25,6 @@ class Console:
                     print("No file with that name found!")
             case "HELP":
                 print("GetFiles: See files that contain a string in their name\nView: See the contents of files")
-                
+           
         if inp != "RESUME":
             Console.ConsoleRun()

@@ -5,10 +5,12 @@ from array import array
 from enum import Enum
 from Item import ItemWeapon
 from Item import ItemTypes
+from Item import ItemConsumable
 from StatusEffect import StatusEffect
 import random
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
-from Index import Index
+
+
 
 class Entity:
     def __init__(self, args) -> None:
@@ -74,7 +76,7 @@ class Entity:
                     if dmg < 0:
                         dmg = 0
                     target.apply_damage(dmg) 
-                      
+                    
                     print(f"{self.name.capitalize()} hit {target.name.capitalize()} for {dmg} damage. {target.name.capitalize()} now has {target.health} health left")
                     if self.weapon != no_weapon:
                         if self.weapon.effect != None:
@@ -83,6 +85,13 @@ class Entity:
                         if self.weapon.life_steal > 0:
                             self.apply_damage(-self.calc_lifesteal())
                             print(f"{self.name.capitalize()}'s attack drained {self.calc_lifesteal()} health from {target.name.capitalize()}!")
+                    if target.status[StatusEffect.THORNS] > 0:
+                        self.apply_damage(target.status[StatusEffect.THORNS])
+                        print(f"{target.name.capitalize()}'s thorns hurt {self.name.capitalize()} for {target.status[StatusEffect.THORNS]}. They now have {target.health} health left")
+                        target.status[StatusEffect.THORNS] -= dmg
+                        if target.status[StatusEffect.THORNS] < 0:
+                            target.status[StatusEffect.THORNS] = 0
+                        
                         
                     self.stamina -= 3
                         
@@ -115,8 +124,16 @@ class Entity:
                     target.apply_status(StatusEffect.POISON, self.skill)
                     print(f"{self.name.capitalize()} spit at {target.name.capitalize()} and added {self.skill} poison!")
                     self.stamina -= 2
+                case EntityActions.ADD_THORNS.value:
+                    self.apply_status(StatusEffect.THORNS, self.skill)
+                    self.stamina -= 2
+                    print(f"{self.name.capitalize()} braced and added {self.skill} thorns to itself!!")
+                    
         else:
-            print(f"{enemy.name.capitalize()} is too tired to act!")
+            print(f"{self.name.capitalize()} is too tired to act!")
+       
+            
+    
       
 class EntityActions(Enum): 
     STRIKE = 0
@@ -126,6 +143,8 @@ class EntityActions(Enum):
     HEAL = 4
     ADD_WEAK = 5
     ADD_RAGE = 6
+    ADD_THORNS = 7
+    USE_ITEM = 8
 
 #Enemies
 
@@ -196,7 +215,7 @@ toad = Entity({
 dark_sprite = Entity({
     "name": "Dark Sprite",
     "health": 25, 
-    "max_hp": 30,
+    "max_hp": 25,
     "stamina": 15, 
     "strength": 3,
     "poison": 0,
@@ -207,4 +226,18 @@ dark_sprite = Entity({
     "Weapon": absorbers_wand,
     "is_enemy": True
     })
+steelblade_squire = Entity({
+    "name": "Steelblade Squire",
+    "health": 45, 
+    "max_hp": 45,
+    "stamina": 25, 
+    "strength": 6,
+    "poison": 0,
+    "skill": 8,
+    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value, EntityActions.ADD_THORNS.value],
+    "max_stamina": 25,
+    "block_amt": 4,
+    "Weapon": no_weapon,
+    "is_enemy": True
+})
 

@@ -25,9 +25,11 @@ class ItemAccessory(Item):
         
 
 class ItemConsumable(Item):
-    def __init__(self, effect, intensity) -> None:
-        self.effect : ConsumableTypes = effect
-        self.intensity : int = intensity
+    def __init__(self, args) -> None:
+        self.healing : int = args["healing"]
+        self.rage : int = args["rage"]
+        self.stamina : int = args["stamina"]
+        self.thorns : int = args["thorns"]
 
 
 class ItemTypes(Enum):
@@ -80,3 +82,10 @@ blade_of_agony = ItemWeapon({
     "status_effect": StatusEffect.BLEED,
     "life_steal": 40
 })
+health_potion = ItemConsumable({
+    "healing": 10,
+    "rage": 0,
+    "stamina": 0,
+    "thorns": 0
+
+    })
