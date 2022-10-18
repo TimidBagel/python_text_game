@@ -16,12 +16,13 @@ import os
 import pathlib
 
 ### Scripted Modules 
-from Entity import Entity, EntityActions
+from Entity import Entity, EntityActions, enemies, npcs
 from Race import Race, races, human, halfling, monster
 from Class import Class, classes, peasant, soldier, mage
-from Item import Item, ItemTypes, ItemWeapon
+from Item import Item, ItemTypes, ItemWeapon, weapons, consumables
 from InputValidator import input_float, input_int, input_str
 from StatusEffect import StatusEffect
+from FileSystem import write_file, read_file
 
 from Debug import Console
 #Alternatively, we can import all the weapons from ITEM ~Kit
@@ -50,121 +51,6 @@ npc_encounters : int = 1
 
 global player_turn # This is used to keep track if the last turn was the players or not
 player_turn = True
-
-global enemies
-global npcs
-global races
-global classes
-enemies = []
-npcs = []
-
-#Weapons
-goose_beak = ItemWeapon({
-    "damage_boost": 0,
-    "status_effect": StatusEffect.BLEED
-
-})
-toad_hand = ItemWeapon({
-    "damage_boost": 1,
-    "status_effect": StatusEffect.WEAK
-
-})
-no_weapon = ItemWeapon({
-    "damage_boost": 0,
-    "status_effect": None
-
-    })
-crab = Entity({
-    "name": "crab",
-    "health": 20, 
-    "stamina": 10, 
-    "strength": 5,
-    "poison": 0,
-    "skill": 2,
-    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_POISON.value],
-    "weapon_effect": None,
-    "max_stamina": 10,
-    "block_amt": 0,
-    "Weapon": no_weapon
-})
-
-goose = Entity({
-    "name": "goose",
-    "health": 30, 
-    "stamina": 5, 
-    "strength": 8,
-    "poison": 0,
-    "skill": 1,
-    "actions": [EntityActions.STRIKE.value],
-    "weapon_effect": StatusEffect.BLEED,
-    "max_stamina": 5,
-    "block_amt": 0,
-    "Weapon": goose_beak
-    
-})
-turtle = Entity({
-    "name": "turtle",
-    "health": 50, 
-    "stamina": 20, 
-    "strength": 1,
-    "poison": 0,
-    "skill": 12,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value, EntityActions.BLOCK.value],
-    "weapon_effect": None,
-    "max_stamina": 20,
-    "block_amt": 5,
-    "Weapon": no_weapon
-    
-})
-toad = Entity({
-    "name": "toad",
-    "health": 35, 
-    "stamina": 30, 
-    "strength": 2,
-    "poison": 0,
-    "skill": 4,
-    "actions": [EntityActions.STRIKE.value, EntityActions.ADD_RAGE.value, EntityActions.BLOCK.value],
-    "weapon_effect": StatusEffect.WEAK,
-    "max_stamina": 30,
-    "block_amt": 3,
-    "Weapon": toad_hand
-    
-})
-enemies.append(crab)
-enemies.append(goose)
-enemies.append(turtle)
-enemies.append(toad)
-fred = Entity({
-    "name": "fred",
-    "health": 9001,
-    "max_hp": 9001,
-    "stamina": 9001,
-    "strength": 9001,
-    "poison": 9001,
-    "skill": 9001,
-    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
-    "max_stamina": 9001,
-    "block_amt": 0,
-    "Weapon": no_weapon,
-    "is_enemy": True
-    
-})
-martyr = Entity({ #martyr npc 
-    "name": "martyr",
-    "health": 90,
-    "max_hp": 90,
-    "stamina": 20,
-    "strength": 3,
-    "poison": 4,
-    "skill": 10,
-    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value, EntityActions.ADD_RAGE],
-    "max_stamina": 20,
-    "block_amt": 1,
-    "Weapon": blade_of_agony,
-    "is_enemy": True
-})
-npcs.append(fred)
-npcs.append(draughlix)
 
 player = Entity({
     "name": "player",
@@ -267,18 +153,6 @@ def progression(): #progression loop wip -p
 ### /Action Loop 
 
 ### Character Creation
-def write_file(path, contents):
-    file = open(path, "w")
-    for i in contents:
-        file.write(f"{i} {contents[i]}\n")
-    file.close()
-
-def read_file(path):
-    file = open(path, "r")
-    contents = file.readlines()
-    file.close()
-    return contents
-
 def new_character(character_path):
     print()
     name = input_str("Enter a name for your new character: ")
@@ -349,6 +223,7 @@ Strength: {new_character.strength}
     """)
 
 def fetch_character(name): # wip for fetching character files
+    character = None
     return character
 ### /Character Creation
 

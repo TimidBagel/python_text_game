@@ -153,6 +153,7 @@ class EntityActions(Enum):
     USE_ITEM = 8
 
 #Enemies
+enemies = []
 
 crab = Entity({
     "name": "crab",
@@ -166,9 +167,7 @@ crab = Entity({
     "max_stamina": 10,
     "block_amt": 0,
     "Weapon": no_weapon,
-    "is_enemy": True
-
-    
+    "is_enemy": True  
 })
 
 goose = Entity({
@@ -259,3 +258,45 @@ steelblade_squire = Entity({
     "is_enemy": True
 })
 
+enemies.append(goose)
+enemies.append(turtle)
+enemies.append(toad)
+enemies.append(rabbit)
+enemies.append(dark_sprite)
+enemies.append(steelblade_squire)
+
+# NPCs
+npcs = []
+
+fred = Entity({
+    "name": "fred",
+    "health": 9001,
+    "max_hp": 9001,
+    "stamina": 9001,
+    "strength": 9001,
+    "poison": 9001,
+    "skill": 9001,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "max_stamina": 9001,
+    "block_amt": 0,
+    "Weapon": no_weapon,
+    "is_enemy": True
+    
+})
+martyr = Entity({ #martyr npc 
+    "name": "martyr",
+    "health": 90,
+    "max_hp": 90,
+    "stamina": 20,
+    "strength": 3,
+    "poison": 4,
+    "skill": 10,
+    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value, EntityActions.ADD_RAGE],
+    "max_stamina": 20,
+    "block_amt": 1,
+    "Weapon": blade_of_agony,
+    "is_enemy": True
+})
+
+npcs.append(fred)
+npcs.append(martyr)
