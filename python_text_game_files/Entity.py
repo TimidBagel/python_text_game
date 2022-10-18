@@ -17,8 +17,8 @@ from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agon
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
-        self.race = args.setdefault('race', monster)
-        self.Class = args.setdefault('Class', peasant)
+        self.race = args.get('race', monster)
+        self.Class = args.get('Class', peasant)
         self.health : int = args["health"]
         self.max_hp : int = args["max_hp"]
         self.stamina : int = args["stamina"]
