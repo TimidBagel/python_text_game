@@ -219,6 +219,7 @@ toad = Entity({
 rabbit = Entity({
     "name": "rabbit",
     "health": 16,
+    "max_hp": 16,
     "stamina": 30,
     "strength": 11,
     "poison": 0,
@@ -226,7 +227,8 @@ rabbit = Entity({
     "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
     "max_stamina": 30,
     "block_amt": 0,
-    "Weapon": no_weapon
+    "Weapon": no_weapon,
+    "is_enemy": True
 })
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
