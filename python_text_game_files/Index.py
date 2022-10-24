@@ -195,17 +195,19 @@ def new_character(character_path):
     new_character = Entity({
         "name": name,
         "race": char_race,
-        "Class": char_class,
+        "class": char_class,
         "health": 30 + char_race.health + char_class.health,
+        "max_hp": 30 + char_race.health + char_class.health,
         "stamina": 10 + char_race.stamina + char_class.stamina,
         "strength": 10 + char_race.strength + char_class.strength,
         "poison": 0,
         "skill": 5 + char_class.skill,
         "actions": [EntityActions.STRIKE, EntityActions.BLOCK],
         "weapon_effect": None,
-        "max_stamina": 10,
+        "max_stamina": 10 + char_race.stamina + char_class.stamina,
         "block_amt": 3,
-        "Weapon": no_weapon
+        "Weapon": no_weapon,
+        "is_enemy": False
     })
 
     write_file(f"{character_path}{name}.json", new_character.raw)
