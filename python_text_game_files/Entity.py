@@ -7,6 +7,8 @@ from Item import ItemWeapon
 from Item import ItemTypes
 from Item import ItemConsumable
 from StatusEffect import StatusEffect
+from Race import monster
+from Class import peasant
 import random
 from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agony
 
@@ -15,6 +17,8 @@ from Item import goose_beak, no_weapon, toad_hand, absorbers_wand, blade_of_agon
 class Entity:
     def __init__(self, args) -> None:
         self.name = args["name"]
+        self.race = args.get('race', monster)
+        self.Class = args.get('Class', peasant)
         self.health : int = args["health"]
         self.max_hp : int = args["max_hp"]
         self.stamina : int = args["stamina"]
@@ -39,6 +43,8 @@ class Entity:
         
         self.block : int = 0
         self.max_stamina : int = args["max_stamina"]
+
+        self.raw : dict = args
         self.is_enemy : bool = args["is_enemy"]
         
 
@@ -147,6 +153,7 @@ class EntityActions(Enum):
     USE_ITEM = 8
 
 #Enemies
+enemies = []
 
 crab = Entity({
     "name": "crab",
@@ -160,9 +167,7 @@ crab = Entity({
     "max_stamina": 10,
     "block_amt": 0,
     "Weapon": no_weapon,
-    "is_enemy": True
-
-    
+    "is_enemy": True  
 })
 
 goose = Entity({
@@ -211,6 +216,20 @@ toad = Entity({
     "is_enemy": True
     
 })
+rabbit = Entity({
+    "name": "rabbit",
+    "health": 16,
+    "max_hp": 16,
+    "stamina": 30,
+    "strength": 11,
+    "poison": 0,
+    "skill": 6,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "max_stamina": 30,
+    "block_amt": 0,
+    "Weapon": no_weapon,
+    "is_enemy": True
+})
 #Lets start moving away from the animals they are really cool but we should make them cooler
 dark_sprite = Entity({
     "name": "Dark Sprite",
@@ -241,3 +260,45 @@ steelblade_squire = Entity({
     "is_enemy": True
 })
 
+enemies.append(goose)
+enemies.append(turtle)
+enemies.append(toad)
+enemies.append(rabbit)
+enemies.append(dark_sprite)
+enemies.append(steelblade_squire)
+
+# NPCs
+npcs = []
+
+fred = Entity({
+    "name": "fred",
+    "health": 9001,
+    "max_hp": 9001,
+    "stamina": 9001,
+    "strength": 9001,
+    "poison": 9001,
+    "skill": 9001,
+    "actions": [EntityActions.STRIKE.value, EntityActions.HEAL.value],
+    "max_stamina": 9001,
+    "block_amt": 0,
+    "Weapon": no_weapon,
+    "is_enemy": True
+    
+})
+martyr = Entity({ #martyr npc 
+    "name": "martyr",
+    "health": 90,
+    "max_hp": 90,
+    "stamina": 20,
+    "strength": 3,
+    "poison": 4,
+    "skill": 10,
+    "actions": [EntityActions.STRIKE.value, EntityActions.BLOCK.value, EntityActions.ADD_RAGE],
+    "max_stamina": 20,
+    "block_amt": 1,
+    "Weapon": blade_of_agony,
+    "is_enemy": True
+})
+
+npcs.append(fred)
+npcs.append(martyr)

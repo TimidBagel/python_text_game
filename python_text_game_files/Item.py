@@ -54,6 +54,9 @@ class EffectTarget(Enum):
     SELF = 1
     ENEMY = 2
 
+# Weapons
+weapons = []
+
 goose_beak = ItemWeapon({
     "damage_boost": 0,
     "status_effect": StatusEffect.BLEED,
@@ -72,20 +75,34 @@ no_weapon = ItemWeapon({
     "life_steal": 0
 
 })
+
 absorbers_wand = ItemWeapon({
     "damage_boost": 0,
     "status_effect": None,
     "life_steal": 45
 })
+
 blade_of_agony = ItemWeapon({
     "damage_boost": 5,
     "status_effect": StatusEffect.BLEED,
     "life_steal": 40
 })
+
+weapons.append(goose_beak)
+weapons.append(toad_hand)
+weapons.append(no_weapon)
+weapons.append(absorbers_wand)
+weapons.append(blade_of_agony)
+
+# Consumables
+consumables = []
+
 health_potion = ItemConsumable({
     "healing": 10,
     "rage": 0,
     "stamina": 0,
     "thorns": 0
 
-    })
+})
+
+consumables.append(health_potion)
